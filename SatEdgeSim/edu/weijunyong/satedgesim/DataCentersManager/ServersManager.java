@@ -1,10 +1,14 @@
 package edu.weijunyong.satedgesim.DataCentersManager;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,6 +32,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import edu.weijunyong.satedgesim.MainApplication;
 import edu.weijunyong.satedgesim.LocationManager.Location;
 import edu.weijunyong.satedgesim.LocationManager.Mobility;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
@@ -55,9 +60,10 @@ public class ServersManager {
 	}
 
 	public void generateDatacentersAndDevices() throws Exception {
-		generateCloudDataCenters();
-		generateEdgeDataCenters();
 		generateEdgeDevices();
+		generateEdgeDataCenters();
+		generateCloudDataCenters();
+		
 		// Select where the orchestrators are deployed
 		if (simulationParameters.ENABLE_ORCHESTRATORS)
 			selectOrchestrators();
@@ -94,6 +100,26 @@ public class ServersManager {
 		NodeList edgeDevicesList = doc.getElementsByTagName("device");
 		int instancesPercentage = 0;
 		Element edgeElement = null;
+		//从最大数目边缘设备中抽取当前场景边缘设备数量，号码随机乱序不重复
+		int edgeDevicesNum = simulationParameters.MAX_NUM_OF_EDGE_DEVICES;
+		int getDevicesCount = getSimulationManager().getScenario().getDevicesCount();
+	    Set<Integer> set=new HashSet<Integer>();
+		while(true){
+			set.add((int)(Math.random()*edgeDevicesNum+1));
+			if(set.size()== getDevicesCount)
+				break;
+		}
+		//System.out.println(set);
+		int[] EDGEID = new int[set.size()];
+		Iterator<Integer> it = set.iterator();
+		int count = 0;
+        while(it.hasNext()){
+            int s = it.next();
+            EDGEID[count] = s;
+			count++;
+		}
+        //EDGEID数组保存当前场景边缘设备的ID号码
+        int edgeID = 0, index=0;
 
 		// Load all devices types in edgedevices.xml file
 		for (int i = 0; i < edgeDevicesList.getLength(); i++) {
@@ -106,14 +132,14 @@ public class ServersManager {
 			float devicesInstances = getSimulationManager().getScenario().getDevicesCount() * instancesPercentage / 100;
 
 			for (int j = 0; j < devicesInstances; j++) {
-				if (datacentersList.size() > getSimulationManager().getScenario().getDevicesCount()
-						+ simulationParameters.NUM_OF_EDGE_DATACENTERS) {
+				if (datacentersList.size() > getSimulationManager().getScenario().getDevicesCount() || index >= getDevicesCount) {
 					getSimulationManager().getSimulationLogger().print(
 							"ServersManager- Wrong percentages values (the sum is superior than 100%), check edge_devices.xml file !");
 					break;
 				}
-
-				datacentersList.add(createDatacenter(edgeElement, simulationParameters.TYPES.EDGE_DEVICE));
+				edgeID = EDGEID[index];
+				index++;
+				datacentersList.add(createDatacenter(edgeElement, simulationParameters.TYPES.EDGE_DEVICE, edgeID));
 
 			}
 		}
@@ -125,7 +151,9 @@ public class ServersManager {
 		// Add more devices
 		int missingInstances = getSimulationManager().getScenario().getDevicesCount() - datacentersList.size();
 		for (int k = 0; k < missingInstances; k++) {
-			datacentersList.add(createDatacenter(edgeElement, simulationParameters.TYPES.EDGE_DEVICE));
+			edgeID = EDGEID[index];
+			index++;
+			datacentersList.add(createDatacenter(edgeElement, simulationParameters.TYPES.EDGE_DEVICE, edgeID));
 		}
 
 	}
@@ -140,7 +168,9 @@ public class ServersManager {
 		for (int i = 0; i < datacenterList.getLength(); i++) {
 			Node datacenterNode = datacenterList.item(i);
 			Element datacenterElement = (Element) datacenterNode;
-			datacentersList.add(createDatacenter(datacenterElement, simulationParameters.TYPES.EDGE_DATACENTER));
+			Element location = (Element) datacenterElement.getElementsByTagName("location").item(0);
+			int edcID = Integer.parseInt(location.getElementsByTagName("edcID").item(0).getTextContent());
+			datacentersList.add(createDatacenter(datacenterElement, simulationParameters.TYPES.EDGE_DATACENTER, edcID));
 		}
 	}
 
@@ -154,15 +184,18 @@ public class ServersManager {
 		for (int i = 0; i < datacenterList.getLength(); i++) {
 			Node datacenterNode = datacenterList.item(i);
 			Element datacenterElement = (Element) datacenterNode;
-			datacentersList.add(createDatacenter(datacenterElement, simulationParameters.TYPES.CLOUD));
+			Element location = (Element) datacenterElement.getElementsByTagName("location").item(0);
+			int cloudID = Integer.parseInt(location.getElementsByTagName("cloudID").item(0).getTextContent());
+			datacentersList.add(createDatacenter(datacenterElement, simulationParameters.TYPES.CLOUD, cloudID));
 		}
 	}
 
-	private DataCenter createDatacenter(Element datacenterElement, simulationParameters.TYPES type)
+	private DataCenter createDatacenter(Element datacenterElement, simulationParameters.TYPES type, int ID)
 			throws Exception {
 
-		int x_position = -1;
-		int y_position = -1;
+		double x_position = -1;
+		double y_position = -1;
+		double z_position = -1;
 
 		List<Host> hostList = createHosts(datacenterElement, type);
 
@@ -170,11 +203,16 @@ public class ServersManager {
 		Constructor<?> datacenterConstructor = edgeDataCenterType.getConstructor(SimulationManager.class, List.class);
 		DataCenter datacenter = (DataCenter) datacenterConstructor.newInstance(getSimulationManager(),
 				hostList);
+		//初始化位置坐标
+		datacenter.setDeviceID(ID);
+		String FID = Integer.toString(ID);
 		if (type == simulationParameters.TYPES.EDGE_DATACENTER) {
-			Element location = (Element) datacenterElement.getElementsByTagName("location").item(0);
-			x_position = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
-			y_position = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
-			datacenterLocation = new Location(x_position, y_position);
+			String fileName = MainApplication.getLocationFolder() + "edge_datacenter/edge" + FID + ".csv";
+	    	double[] locationPos= SetDefaultlocation(fileName,0);
+	    	x_position = locationPos[0];
+	    	y_position = locationPos[1];
+	    	z_position = locationPos[2];		
+			datacenterLocation = new Location(x_position, y_position, z_position);
 		} else if (type == simulationParameters.TYPES.EDGE_DEVICE) {
 			datacenter.setMobile(
 					Boolean.parseBoolean(datacenterElement.getElementsByTagName("mobility").item(0).getTextContent()));
@@ -182,14 +220,23 @@ public class ServersManager {
 					Boolean.parseBoolean(datacenterElement.getElementsByTagName("battery").item(0).getTextContent()));
 			datacenter.setBatteryCapacity(Double
 					.parseDouble(datacenterElement.getElementsByTagName("batteryCapacity").item(0).getTextContent()));
-
-			// Generate random location for edge devices
-			datacenterLocation = new Location(new Random().nextInt(simulationParameters.AREA_LENGTH),
-					new Random().nextInt(simulationParameters.AREA_LENGTH));
+			String fileName = MainApplication.getLocationFolder() + "edge_devices/mist" + FID + ".csv";
+	    	double[] locationPos= SetDefaultlocation(fileName,0);
+	    	x_position = locationPos[0];
+	    	y_position = locationPos[1];
+	    	z_position = locationPos[2];
+			datacenterLocation = new Location(x_position, y_position, z_position);
 			getSimulationManager().getSimulationLogger().deepLog("ServersManager- Edge device:" + datacentersList.size()
-					+ "    location: ( " + datacenterLocation.getXPos() + "," + datacenterLocation.getYPos() + " )");
+					+ "    location: ( " + datacenterLocation.getXPos() + "," + datacenterLocation.getYPos() + "," + datacenterLocation.getZPos()+ " )");
+		}else if (type == simulationParameters.TYPES.CLOUD) {
+			String fileName = MainApplication.getLocationFolder() + "cloud/cloud" + FID + ".csv";
+	    	double[] locationPos= SetDefaultlocation(fileName,0);
+	    	x_position = locationPos[0];
+	    	y_position = locationPos[1];
+	    	z_position = locationPos[2];
+			datacenterLocation = new Location(x_position, y_position, z_position);
 		}
-
+		
 		double idleConsumption = Double
 				.parseDouble(datacenterElement.getElementsByTagName("idleConsumption").item(0).getTextContent());
 		double maxConsumption = Double
@@ -284,6 +331,45 @@ public class ServersManager {
 
 		return hostList;
 	}
+	
+	public static double[] SetDefaultlocation(String fileName, int time){
+		if (simulationParameters.LOCATIONTIMENUM < time) {
+			System.out.println("This time (" +time +") is Overflow ");
+			time = simulationParameters.LOCATIONTIMENUM;
+		}
+		String i1 = "";
+        String i2 = "";
+        String i3 = "";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            reader.readLine();//第一行信息，为标题信息，不用,如果需要，注释掉
+            String line = null;
+            while((line = reader.readLine()) != null){
+                String item[] = line.split(",");//CSV格式文件为逗号分隔符文件，这里根据逗号切分
+                if ((int)Double.parseDouble(item[0]) == time){
+                    i1 = item[1];
+                    i2 = item[2];
+                    i3 = item[3];
+                    break;
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        double xPos = Double.parseDouble(i1);
+        double yPos = Double.parseDouble(i2);
+        double zPos = Double.parseDouble(i3);
+        double Geohigh = Math.abs(Math.sqrt(Math.pow(xPos, 2)+ Math.pow(yPos, 2)+ Math.pow(zPos, 2)));
+        if(simulationParameters.EARTH_RADIUS > Geohigh) {
+            System.out.println(fileName + " Incorrect data. Time is: " +time);
+            xPos = xPos*10;
+            yPos = yPos*10;
+            zPos = zPos*10;
+        }
+        double[] locationPos= {xPos,yPos,zPos};
+        return locationPos;
+    }
 
 	public List<Vm> getVmList() {
 		return vmList;

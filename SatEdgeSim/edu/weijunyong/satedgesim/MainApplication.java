@@ -39,6 +39,7 @@ public class MainApplication {
 	protected static String edgeDevicesFile = "SatEdgeSim/settings/edge_devices.xml";
 	protected static String cloudFile = "SatEdgeSim/settings/cloud.xml";
 	protected static String outputFolder = "SatEdgeSim/output/";
+	protected static String locationFolder = "SatEdgeSim/settings/locationflie/";
 
 	// Parallel simulation Parameters
 	protected int fromIteration;
@@ -61,7 +62,7 @@ public class MainApplication {
 
 		// Check files
 		FilesParser fp = new FilesParser();
-		if (!fp.checkFiles(simConfigfile, edgeDevicesFile, edgeDataCentersFile, applicationsFile, cloudFile))
+		if (!fp.checkFiles(simConfigfile, edgeDevicesFile, edgeDataCentersFile, applicationsFile, cloudFile, locationFolder))
 			Runtime.getRuntime().exit(0); // if files aren't correct stop everything.
 
 		// Disable cloudsim plus log
@@ -218,6 +219,10 @@ public class MainApplication {
 
 	public static String getOutputFolder() {
 		return outputFolder;
+	}
+	
+	public static String getLocationFolder() {
+		return locationFolder;
 	}
 
 	protected static void setCustomEdgeDataCenters(Class<? extends DataCenter> edgedatacenter2) {

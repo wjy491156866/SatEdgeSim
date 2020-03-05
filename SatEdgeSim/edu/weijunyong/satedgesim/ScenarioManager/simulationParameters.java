@@ -3,25 +3,30 @@ package edu.weijunyong.satedgesim.ScenarioManager;
 
 public class simulationParameters { 
 
-	public static String EDGE_DEVICES_FILE="";     // Edge devices xml file path
-	public static String EDGE_DATACENTERS_FILE=""; // Edge datacenters xml file path
-	public static String CLOUD_DATACENTERS_FILE="";// Cloud data centers xml file path
+	public static String EDGE_DEVICES_FILE="";     // Edge devices xml file path 边缘设备配置文件路径
+	public static String EDGE_DATACENTERS_FILE=""; // Edge datacenters xml file path 边缘节点配置文件路径
+	public static String CLOUD_DATACENTERS_FILE="";// Cloud data centers xml file path 云数据中心配置文件路径
+	public static String LocationFolder="";        // 轨道文件 路径
 
-	public static boolean PARALLEL = false;       // Enable parallelism
-	public static double SIMULATION_TIME;         // Simulation time (in seconds) 
-	public static int PAUSE_LENGTH;               // Pause between scenarios (in seconds)
+	public static boolean PARALLEL = false;       // Enable parallelism 启用并行
+	public static double SIMULATION_TIME;         // Simulation time (in seconds) 仿真总时长
+	public static int PAUSE_LENGTH;               // Pause between scenarios (in seconds) 场景之间的暂停
 	public static double UPDATE_INTERVAL;         // Event interval (vm utilization update, mobility update...) (in seconds) 
+												  //更新事件间隔（vm利用率更新，移动性更新...） 
 	public static double INITIALIZATION_TIME;     // Time required to generate the different resources (in seconds)
+												  //生成不同资源所需的时间，资源初始化时间
 	
 	// Charts settings
-	public static boolean DISPLAY_REAL_TIME_CHARTS;   // Show real time charts
-	public static boolean AUTO_CLOSE_REAL_TIME_CHARTS;// Close real time charts when simlation finishes 
-	public static double CHARTS_UPDATE_INTERVAL;	  // Charts refresh interval in seconds
-	public static boolean SAVE_CHARTS;                // Save charts to bitmap format (*.png files)  
+	public static boolean DISPLAY_REAL_TIME_CHARTS;   // Show real time charts 显示实时图表
+	public static boolean AUTO_CLOSE_REAL_TIME_CHARTS;// Close real time charts when simlation finishes 拟完成后关闭实时图表
+	public static double CHARTS_UPDATE_INTERVAL;	  // Charts refresh interval in seconds  图表刷新间隔
+	public static boolean SAVE_CHARTS;                // Save charts to bitmap format (*.png files)  将图表保存为位图格式
 	
 	// Simulation area
-	public static int AREA_LENGTH;                         
-	public static int AREA_WIDTH;
+	//public static int AREA_LENGTH;                         
+	//public static int AREA_WIDTH;
+	public static double EARTH_RADIUS;			  //Earth radius(in meters)
+	public static double MIN_HEIGHT;			  //sat min_height(in meters)
 	
 	// Edge devices, server,datacenters..
 	public static int NUM_OF_EDGE_DATACENTERS;    // Number of edge data centers
@@ -29,7 +34,9 @@ public class simulationParameters {
 	public static int MIN_NUM_OF_EDGE_DEVICES;    // Min number of edge devices
 	public static int MAX_NUM_OF_EDGE_DEVICES;    // Max number of edge devices  
 	public static int EDGE_DEVICE_COUNTER_STEP;   // Edge devices growing rate   
-	public static double SPEED;                   // Speed of mobile devices in meters per seconds m/s
+	public static int EDGE_DEVICE_COUNTER_TIME;	  //edge_device_counter_time
+	public static int LOCATIONTIMENUM;			  //edge_device_csv_timenum
+	//public static double SPEED;                   // Speed of mobile devices in meters per seconds m/s
 	public static enum TYPES {                    // Types of resources  
 		CLOUD, EDGE_DATACENTER, EDGE_DEVICE
 	};
@@ -43,10 +50,10 @@ public class simulationParameters {
 	public static int BANDWIDTH_WLAN;             // wlan bandwidth (in kbits/s)
 	public static int WAN_BANDWIDTH;              // wan (cloud) bandwidth (in kbits/s) 
 	public static double POWER_CONS_PER_MEGABYTE; // Power consumption by every transferred MBytes (in Wh)
-	public static int EDGE_DEVICES_RANGE;         // The range of edge devices (in meters)
-	public static int EDGE_DATACENTERS_RANGE;     // The range of edge servers (in meters)
 	public static double NETWORK_UPDATE_INTERVAL; // Network model update interval (in seconds) 
 	public static double WAN_PROPAGATION_DELAY;   // Wan propagation delay (in seconds)
+	public static int EDGE_DEVICES_RANGE;         // The range of edge devices (in meters)
+	public static int EDGE_DATACENTERS_RANGE;     // The range of edge servers (in meters)
 	
 	// Energy model parameters
 	public static double AMPLIFIER_DISSIPATION_FREE_SPACE; // The power consumption for each transferred bit (in joul per bit :  J/bit)

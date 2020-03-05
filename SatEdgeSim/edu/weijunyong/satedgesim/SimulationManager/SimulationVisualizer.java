@@ -28,8 +28,10 @@ import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters.TYPES;
 public class SimulationVisualizer {
 	JFrame simulationResultsFrame;
 	private SwingWrapper<XYChart> swingWrapper;
+	/*
 	private XYChart mapChart = new XYChartBuilder().height(270).width(450).theme(ChartTheme.Matlab)
 			.title("Simulation map").xAxisTitle("Width (meters)").yAxisTitle("Length (meters)").build();
+	*/
 	private XYChart cpuUtilizationChart = new XYChartBuilder().height(270).width(450).theme(ChartTheme.Matlab)
 			.title("CPU utilization").xAxisTitle("Time (s)").yAxisTitle("Utilization (%)").build();
 	private XYChart networkUtilizationChart = new XYChartBuilder().height(270).width(450).theme(ChartTheme.Matlab)
@@ -54,14 +56,14 @@ public class SimulationVisualizer {
 	void updateCharts() {
 		if (firstTime) {
 			initCharts();
-			charts.add(mapChart);
+			//charts.add(mapChart);
 			charts.add(cpuUtilizationChart);
 			charts.add(networkUtilizationChart);
 			charts.add(tasksSuccessChart);
 			displayCharts();
 			firstTime = false;
 		}
-		mapChart();
+		//mapChart();
 		networkUtilizationChart();
 		tasksSucessRateChart();
 		utilizationChart();
@@ -70,10 +72,12 @@ public class SimulationVisualizer {
 
 	private void initCharts() {
 
+		/* 
 		mapChart.getStyler().setDefaultSeriesRenderStyle(XYSeriesRenderStyle.Scatter);
 		mapChart.getStyler().setMarkerSize(4);
 		updateStyle(mapChart, new Double[] { 0.0, (double) simulationParameters.AREA_WIDTH, 0.0,
 				(double) simulationParameters.AREA_LENGTH });
+		 */
 
 		tasksSuccessChart.getStyler().setDefaultSeriesRenderStyle(XYSeriesRenderStyle.Line);
 		updateStyle(tasksSuccessChart, new Double[] { 0.0, null, null, 100.0 });
@@ -85,13 +89,15 @@ public class SimulationVisualizer {
 		updateStyle(networkUtilizationChart, new Double[] { 0.0, simulationManager.getSimulation().clock(), 0.0,
 				simulationParameters.WAN_BANDWIDTH / 1000.0 });
 	}
-
+	
+	/*
 	void mapChart() {
 		// Add edge devices to map
 		addEdgeDevicesToMap();
 		// Add edge data centers to the map
 		addEdgeDataCentersToMap();
 	}
+	*/
 
 	private void tasksSucessRateChart() {
 		if (((int) simulationManager.getSimulation().clockInMinutes()) != clock) {
@@ -159,7 +165,8 @@ public class SimulationVisualizer {
 				new Double[] { currentTime - 200, currentTime, 0.0, simulationParameters.WAN_BANDWIDTH / 1000.0 });
 		updateSeries(networkUtilizationChart, "WAN", time, toArray(wanUsage), SeriesMarkers.NONE, Color.BLACK); 
 	}
-
+	
+	/*
 	private void addEdgeDevicesToMap() {
 		// Initialize the X and Y series that will be used to draw the map
 		// Dead devices series
@@ -255,7 +262,8 @@ public class SimulationVisualizer {
 
 		}
 	}
-
+	*/
+	
 	private void displayCharts() {
 		if (firstTime) {
 			swingWrapper = new SwingWrapper<>(charts);
@@ -316,7 +324,7 @@ public class SimulationVisualizer {
 				+ simulationManager.getSimulationId() + "/iteration_" + simulationManager.getIterationId() + "__"
 				+ simulationManager.getScenario().toString();
 		new File(folderName).mkdirs();
-		BitmapEncoder.saveBitmapWithDPI(mapChart, folderName + "/map_chart", BitmapFormat.PNG, 600);
+		//BitmapEncoder.saveBitmapWithDPI(mapChart, folderName + "/map_chart", BitmapFormat.PNG, 600);
 		BitmapEncoder.saveBitmapWithDPI(networkUtilizationChart, folderName + "/network_usage", BitmapFormat.PNG, 600);
 		BitmapEncoder.saveBitmapWithDPI(cpuUtilizationChart, folderName + "/cpu_usage", BitmapFormat.PNG, 600);
 		BitmapEncoder.saveBitmapWithDPI(tasksSuccessChart, folderName + "/tasks_success_rate", BitmapFormat.PNG, 600);

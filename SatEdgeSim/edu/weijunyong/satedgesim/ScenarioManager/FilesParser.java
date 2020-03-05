@@ -1,7 +1,9 @@
 package edu.weijunyong.satedgesim.ScenarioManager;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -18,10 +20,11 @@ import edu.weijunyong.satedgesim.SimulationManager.SimLog;
 public class FilesParser {
 
 	// Scan files
-	public boolean checkFiles(String simProp, String edgeDevicesFile, String edgeDataCentersFile, String appFile, String cloudFile) {
+	public boolean checkFiles(String simProp, String edgeDevicesFile, String edgeDataCentersFile, String appFile, String cloudFile, String locationFolder) {
 		simulationParameters.EDGE_DEVICES_FILE = edgeDevicesFile;
 		simulationParameters.EDGE_DATACENTERS_FILE = edgeDataCentersFile;
 		simulationParameters.CLOUD_DATACENTERS_FILE = cloudFile;
+		simulationParameters.LocationFolder = locationFolder;
 		return (checkSimulationProperties(simProp) && checkXmlFiles(edgeDevicesFile, TYPES.EDGE_DEVICE)
 				&& checkXmlFiles(edgeDataCentersFile, TYPES.EDGE_DATACENTER) && checkXmlFiles(cloudFile, TYPES.CLOUD) && checkAppFile(appFile));
 	}
@@ -51,8 +54,12 @@ public class FilesParser {
 					.parseDouble(prop.getProperty("charts_update_interval").trim());
 			simulationParameters.SAVE_CHARTS = Boolean.parseBoolean(prop.getProperty("save_charts").trim());
 
-			simulationParameters.AREA_LENGTH = Integer.parseInt(prop.getProperty("length").trim()); // seconds
-			simulationParameters.AREA_WIDTH = Integer.parseInt(prop.getProperty("width").trim()); // seconds
+			//simulationParameters.AREA_LENGTH = Integer.parseInt(prop.getProperty("length").trim()); // seconds
+			//simulationParameters.AREA_WIDTH = Integer.parseInt(prop.getProperty("width").trim()); // seconds
+			simulationParameters.EARTH_RADIUS = Double
+					.parseDouble(prop.getProperty("Earth_radius").trim());	// meters
+			simulationParameters.MIN_HEIGHT= Double
+					.parseDouble(prop.getProperty("min_height").trim());	// meters
 			simulationParameters.UPDATE_INTERVAL = Double.parseDouble(prop.getProperty("update_interval").trim()); // seconds
 			simulationParameters.DEEP_LOGGING = Boolean.parseBoolean(prop.getProperty("deep_log_enabled").trim());
 			simulationParameters.SAVE_LOG = Boolean.parseBoolean(prop.getProperty("save_log_file").trim());
@@ -67,18 +74,31 @@ public class FilesParser {
 			simulationParameters.EDGE_DEVICES_RANGE = Integer.parseInt(prop.getProperty("edge_devices_range").trim()); // meters
 			simulationParameters.EDGE_DATACENTERS_RANGE = Integer.parseInt(prop.getProperty("edge_datacenters_coverage").trim()); // meters
 			simulationParameters.PAUSE_LENGTH = Integer.parseInt(prop.getProperty("pause_length").trim());// seconds
-			simulationParameters.MIN_NUM_OF_EDGE_DEVICES = Integer
-					.parseInt(prop.getProperty("min_number_of_edge_devices").trim());
-			simulationParameters.MAX_NUM_OF_EDGE_DEVICES = Integer
-					.parseInt(prop.getProperty("max_number_of_edge_devices").trim());
+			
+			simulationParameters.EDGE_DEVICE_COUNTER_TIME = Integer
+					.parseInt(prop.getProperty("edge_device_counter_time").trim());
+			//simulationParameters.MIN_NUM_OF_EDGE_DEVICES = Integer
+			//		.parseInt(prop.getProperty("min_number_of_edge_devices").trim());
+			String edgelocationname = simulationParameters.LocationFolder + "edge_devices/";
+			File edgelocation = new File(edgelocationname);
+			simulationParameters.MAX_NUM_OF_EDGE_DEVICES = getCsvFilesCount(edgelocation);
+			//simulationParameters.MAX_NUM_OF_EDGE_DEVICES = Integer
+			//		.parseInt(prop.getProperty("max_number_of_edge_devices").trim());
+			simulationParameters.MIN_NUM_OF_EDGE_DEVICES = simulationParameters.MAX_NUM_OF_EDGE_DEVICES
+					/simulationParameters.EDGE_DEVICE_COUNTER_TIME;
 			if (simulationParameters.MIN_NUM_OF_EDGE_DEVICES > simulationParameters.MAX_NUM_OF_EDGE_DEVICES) {
 				SimLog.println(
 						"FilelParser, Error,  the entered min number of edge devices is superior than the max number, check the 'simulation.properties' file.");
 				System.exit(0);
 			}
-			simulationParameters.EDGE_DEVICE_COUNTER_STEP = Integer
-					.parseInt(prop.getProperty("edge_device_counter_size").trim());
-			simulationParameters.SPEED = Double.parseDouble(prop.getProperty("speed").trim()); // meters per second m/s
+			//simulationParameters.EDGE_DEVICE_COUNTER_STEP = Integer
+			//		.parseInt(prop.getProperty("edge_device_counter_size").trim());
+			simulationParameters.EDGE_DEVICE_COUNTER_STEP = simulationParameters.MAX_NUM_OF_EDGE_DEVICES 
+					/simulationParameters.EDGE_DEVICE_COUNTER_TIME;
+			String fileNameedge = simulationParameters.LocationFolder + "edge_devices/edge1.csv";
+			simulationParameters.LOCATIONTIMENUM = Getlocationtimenum(fileNameedge);
+			//simulationParameters.SPEED = Double.parseDouble(prop.getProperty("speed").trim()); // meters per second m/s
+			
 			simulationParameters.BANDWIDTH_WLAN = 1000 * Integer.parseInt(prop.getProperty("wlan_bandwidth").trim()); // Mbits/s
 																														// to
 																														// Kbits/s
@@ -144,7 +164,10 @@ public class FilesParser {
 
 				Node datacenterNode = datacenterList.item(i);
 
-				Element datacenterElement = (Element) datacenterNode; 
+				Element datacenterElement = (Element) datacenterNode;
+				isAttribtuePresent(datacenterElement, "arch");
+				isAttribtuePresent(datacenterElement, "os");
+				isAttribtuePresent(datacenterElement, "vmm");
 				isElementPresent(datacenterElement, "idleConsumption");
 				isElementPresent(datacenterElement, "maxConsumption");
 				if (type == TYPES.EDGE_DEVICE) {
@@ -157,11 +180,12 @@ public class FilesParser {
 					isElementPresent(datacenterElement, "generateTasks");
 				} else if (type == TYPES.CLOUD) {
 					simulationParameters.NUM_OF_CLOUD_DATACENTERS++;
+					Element location = (Element) datacenterElement.getElementsByTagName("location").item(0);///
+					isElementPresent(location, "cloudID");///
 				} else {
 					simulationParameters.NUM_OF_EDGE_DATACENTERS++;
 					Element location = (Element) datacenterElement.getElementsByTagName("location").item(0);
-					isElementPresent(location, "x_pos");
-					isElementPresent(location, "y_pos");
+					isElementPresent(location, "edcID");
 				}
 
 				NodeList hostList = datacenterElement.getElementsByTagName("host");
@@ -196,6 +220,31 @@ public class FilesParser {
 			SimLog.println("FilesParser- Failed to load edge devices file!");
 			return false;
 		}
+		if (type == TYPES.EDGE_DATACENTER) {
+			String edclocationname = simulationParameters.LocationFolder + "edge_datacenter/";
+			File edclocation = new File(edclocationname);
+			if(simulationParameters.NUM_OF_EDGE_DATACENTERS == getCsvFilesCount(edclocation)) {
+				SimLog.println("FilesParser- Fog devices LocationFolder file successfully Loaded!");
+				return true;
+			}
+			else {
+				SimLog.println("FilesParser- Failed to load Fog devices LocationFolder file!");
+				return false;
+			}
+				
+		}
+		else if (type == TYPES.CLOUD) {
+			String cloudlocationname = simulationParameters.LocationFolder + "cloud/";
+			File cloudlocation = new File(cloudlocationname);
+			if(simulationParameters.NUM_OF_CLOUD_DATACENTERS == getCsvFilesCount(cloudlocation)) {
+				SimLog.println("FilesParser- cloud devices LocationFolder file successfully Loaded!");
+				return true;
+			}
+			else {
+				SimLog.println("FilesParser- Failed to load cloud devices LocationFolder file!");
+				return false;
+			}
+		}
 		SimLog.println("FilesParser- Edge devices XML file successfully Loaded!");
 		return true;
 	}
@@ -213,7 +262,7 @@ public class FilesParser {
 			NodeList appList = doc.getElementsByTagName("application");
 			simulationParameters.APPS_COUNT = appList.getLength();// save the number of apps, this will be used later by
 																	// the tasks generator
-			simulationParameters.APPLICATIONS_TABLE = new double[appList.getLength()][6];
+			simulationParameters.APPLICATIONS_TABLE = new double[appList.getLength()][7];
 			for (int i = 0; i < appList.getLength(); i++) {
 				Node appNode = appList.item(i);
 
@@ -225,6 +274,7 @@ public class FilesParser {
 				isElementPresent(appElement, "results_size");
 				isElementPresent(appElement, "task_length");
 				isElementPresent(appElement, "required_core"); 
+				isElementPresent(appElement, "poisson_interarrival"); 
 
 				double max_delay = Double
 						.parseDouble(appElement.getElementsByTagName("max_delay").item(0).getTextContent());
@@ -238,6 +288,8 @@ public class FilesParser {
 						.parseDouble(appElement.getElementsByTagName("task_length").item(0).getTextContent());
 				double required_core = Double
 						.parseDouble(appElement.getElementsByTagName("required_core").item(0).getTextContent()); 
+				double poisson_interarrival = Double
+						.parseDouble(appElement.getElementsByTagName("poisson_interarrival").item(0).getTextContent()); 
 
 				// save apps parameters
 				simulationParameters.APPLICATIONS_TABLE[i][0] = max_delay; // max delay in seconds
@@ -246,6 +298,7 @@ public class FilesParser {
 				simulationParameters.APPLICATIONS_TABLE[i][3] = task_length; // avg task length (MI)
 				simulationParameters.APPLICATIONS_TABLE[i][4] = required_core; // required # of core
 				simulationParameters.APPLICATIONS_TABLE[i][5] = container_size; // the size of the container (KB) 
+				simulationParameters.APPLICATIONS_TABLE[i][6] = poisson_interarrival; // poisson_interarrival in seconds 
 			}
 
 		} catch (Exception e) {
@@ -276,5 +329,48 @@ public class FilesParser {
 					"Attribure '" + key + "' is not found in '" + element.getNodeName() + "'");
 		}
 	}
+	
+	/*
+	 * 方法名：getCsvFilesCount
+	 * 作用：统计.csv文件个数
+	 */
+	public static int getCsvFilesCount(File srcFile){
+		int count=0;
+	    // 判断传入的文件是不是为空
+	    if (srcFile == null) {
+	        throw new NullPointerException();
+	    }
+	    // 把所有目录、文件放入数组
+	    File[] files = srcFile.listFiles();
+	    // 遍历数组每一个元素
+	    for (File f : files) {
+	        // 判断元素是不是文件夹，是文件夹就重复调用此方法（递归）
+	        if (f.isDirectory()) {
+	        	getCsvFilesCount(f);
+	        }else {
+	            // 判断文件是不是以.csv结尾的文件，并且count++（注意：文件要显示扩展名）
+	            if (f.getName().endsWith(".csv")) {
+	                count++;
+	            }
+	        }
+	    }
+	    // 返回.csv文件个数
+	    return count;
+	}
+	    
+	public static int Getlocationtimenum(String fileName){
+		int timenum=-2;  //出去标题和第0秒
+	    try {
+	        BufferedReader reader = new BufferedReader(new FileReader(fileName));//换成你的文件名
+	        reader.readLine();//第一行信息，为标题信息，不用,如果需要，注释掉
+	        while((reader.readLine()) != null){
+	        	timenum++;
+	        }
+	        reader.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return timenum;
+	}	
 
 }

@@ -1,7 +1,7 @@
 package examples;
 
 import edu.weijunyong.satedgesim.MainApplication;
-import edu.weijunyong.satedgesim.TasksGenerator.DefaultTasksGenerator; 
+import edu.weijunyong.satedgesim.LocationManager.DefaultMobilityModel; 
 
 public class Example1 extends MainApplication {
 	/**
@@ -18,13 +18,13 @@ public class Example1 extends MainApplication {
 
 	public static void main(String[] args) {
 		// To change the mobility model
-		setCustomMobilityModel(CustomMobilityManager.class);
+		setCustomMobilityModel(DefaultMobilityModel.class);
 
 		// To change the tasks orchestrator
 		setCustomEdgeOrchestrator(CustomEdgeOrchestrator.class);
 
 		// To change the tasks generator
-		setCustomTasksGenerator(DefaultTasksGenerator.class);
+		setCustomTasksGenerator(CustomTasksGenerator.class);
 
 		// To use a custom edge device/datacenters class
 		setCustomEdgeDataCenters(CustomDataCenter.class);

@@ -39,6 +39,7 @@ public abstract class DataCenter extends DatacenterSimple {
 	protected double currentCpuUtilization = 0;
 	protected SimulationManager simulationManager;
 	private boolean generateTasks = true;
+	protected int deviceID; //设备ID
 
 	public DataCenter(SimulationManager simulationManager, List<? extends Host> hostList) {
 		super(simulationManager.getSimulation(), hostList, new VmAllocationPolicySimple());
@@ -93,6 +94,15 @@ public abstract class DataCenter extends DatacenterSimple {
 
 	public void setType(simulationParameters.TYPES type) {
 		this.deviceType = type;
+	}
+	
+	// DeviceID与轨道绑定
+	public void setDeviceID(int ID) {
+		this.deviceID = ID;
+	}
+	
+	public int getDeviceID() {
+		return deviceID;
 	}
 
 	public Location getLocation() {

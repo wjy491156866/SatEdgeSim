@@ -8,6 +8,7 @@ import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters.TYPES;
 import edu.weijunyong.satedgesim.SimulationManager.SimulationManager;
+import edu.weijunyong.satedgesim.TasksOrchestration.Orchestrator;
 
 public class DefaultTasksGenerator extends TasksGenerator {
 	public DefaultTasksGenerator(SimulationManager simulationManager) {
@@ -15,19 +16,17 @@ public class DefaultTasksGenerator extends TasksGenerator {
 	}
 
 	public List<Task> generate() {
-		// get simulation time in minutes (excluding the initialization time)
-		double simulationTime = (simulationParameters.SIMULATION_TIME - simulationParameters.INITIALIZATION_TIME) / 60;
+		// get simulation time in seconds (excluding the initialization time)
+		double simulationTime = simulationParameters.SIMULATION_TIME - simulationParameters.INITIALIZATION_TIME; //in seconds
 		for (int dev = 0; dev < datacentersList.size(); dev++) { // for each device
 			if (datacentersList.get(dev).getType() == TYPES.EDGE_DEVICE && datacentersList.get(dev).isGeneratingTasks()) {
-
 				int app = new Random().nextInt(simulationParameters.APPS_COUNT); // pickup a random application type for
-																					// every device
+				double lamda = 	simulationParameters.APPLICATIONS_TABLE[app][6];		//poisson_interarrival												// every device
 				datacentersList.get(dev).setApplication(app); // assign this application to that device
-				for (int st = 0; st < simulationTime; st++) { // for each minute
+				int time = 0;
+				while (time < simulationTime) {
 					// generating tasks
-					int time = st * 60;
-					time += new Random().nextInt(59);// pickup random second in this minute "st";
-
+					time += getPossionVariable(lamda);
 					// Shift the time by the defined value "INITIALIZATION_TIME"
 					// in order to start after generating all the resources
 					time += simulationParameters.INITIALIZATION_TIME;
@@ -36,6 +35,25 @@ public class DefaultTasksGenerator extends TasksGenerator {
 			}
 		}
 		return this.getTaskList();
+	}
+	
+	//poisson 
+    private static int getPossionVariable(double lamda) {
+		int x = 0;
+		double y = Math.random(), cdf = getPossionProbability(x, lamda);
+		while (cdf < y) {
+			x++;
+			cdf += getPossionProbability(x, lamda);
+		}
+		return x;
+	}
+ 
+	private static double getPossionProbability(int k, double lamda) {
+		double c = Math.exp(-lamda), sum = 1;
+		for (int i = 1; i <= k; i++) {
+			sum *= lamda / i;
+		}
+		return sum * c;
 	}
 
 	private void insert(int time, int app, int dev) {
@@ -47,7 +65,20 @@ public class DefaultTasksGenerator extends TasksGenerator {
 		long containerSize = (int) simulationParameters.APPLICATIONS_TABLE[app][5]; // the size of the container 
 		Task[] task = new Task[simulationParameters.TASKS_PER_EDGE_DEVICE_PER_MINUTES];
 		int id;
-
+		double min = -1;
+		int selected = datacentersList.size()-1;
+		
+		for (int Registrydev = 0; Registrydev < datacentersList.size(); Registrydev++) {
+			if (datacentersList.get(Registrydev).getType() == TYPES.CLOUD  
+					&&  Orchestrator.issetlink(datacentersList.get(Registrydev),datacentersList.get(dev))) {
+				double dis = Orchestrator.getdistance(datacentersList.get(Registrydev),datacentersList.get(dev));
+				if (min == -1 || min > dis) {
+					min = dis;
+					selected = Registrydev;
+				}
+			}
+		}
+		
 		// generate tasks for every edge device
 		for (int i = 0; i < simulationParameters.TASKS_PER_EDGE_DEVICE_PER_MINUTES; i++) {
 			id = taskList.size();
@@ -58,7 +89,7 @@ public class DefaultTasksGenerator extends TasksGenerator {
 			task[i].setContainerSize(containerSize);
 			task[i].setMaxLatency(maxLatency);
 			task[i].setEdgeDevice(datacentersList.get(dev)); // the device that generate this task (the origin)
-			task[i].setRegistry(datacentersList.get(0)); //set the cloud as registry
+			task[i].setRegistry(datacentersList.get(selected)); //set the closed cloud as registry
 			taskList.add(task[i]);
 			getSimulationManager().getSimulationLogger()
 					.deepLog("BasicTasksGenerator, Task " + id + " with execution time " + time + " (s) generated.");

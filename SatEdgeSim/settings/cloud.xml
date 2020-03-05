@@ -3,7 +3,8 @@
 	<datacenter arch="x86" os="Linux" vmm="Xen"> 
 		<idleConsumption>0.00015</idleConsumption> 		
 		<maxConsumption>0.016</maxConsumption> 
-		<isOrchestrator>true</isOrchestrator>   <!-- it has a task orchestrator or not  --> 
+		<isOrchestrator>true</isOrchestrator>   <!-- it has a task orchestrator or not  --><location>
+	<cloudID>1</cloudID></location>
 		<hosts>
 		    <host>
 				<core>8</core>

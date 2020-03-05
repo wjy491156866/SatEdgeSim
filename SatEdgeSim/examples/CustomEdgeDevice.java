@@ -11,6 +11,7 @@ import edu.weijunyong.satedgesim.DataCentersManager.DefaultDataCenter;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
 import edu.weijunyong.satedgesim.SimulationManager.SimulationManager;
 import edu.weijunyong.satedgesim.TasksGenerator.Task;
+import edu.weijunyong.satedgesim.TasksOrchestration.Orchestrator;
 
 public class CustomEdgeDevice extends DefaultDataCenter { 
 	private static final int UPDATE_CLUSTERS = 11000; // Avoid conflicting with CloudSim Plus Tags 
@@ -81,7 +82,9 @@ public class CustomEdgeDevice extends DefaultDataCenter {
 						.pow((this.getLocation().getXPos() - simulationManager.getServersManager().getDatacenterList()
 								.get(i).getLocation().getXPos()), 2)
 						+ Math.pow((this.getLocation().getYPos() - simulationManager.getServersManager()
-								.getDatacenterList().get(i).getLocation().getYPos()), 2)));
+								.getDatacenterList().get(i).getLocation().getYPos()), 2)
+						+ Math.pow((this.getLocation().getZPos() - simulationManager.getServersManager()
+								.getDatacenterList().get(i).getLocation().getZPos()), 2)));
 				if (distance < simulationParameters.EDGE_DEVICES_RANGE) {
 					// neighbor
 					neighbors++;
@@ -184,7 +187,8 @@ public class CustomEdgeDevice extends DefaultDataCenter {
 		if (this.getParent() != null) {
 			distance = Math.abs(
 					Math.sqrt(Math.pow((this.getLocation().getXPos() - this.getParent().getLocation().getXPos()), 2)
-							+ Math.pow((this.getLocation().getYPos() - this.getParent().getLocation().getYPos()), 2)));
+							+ Math.pow((this.getLocation().getYPos() - this.getParent().getLocation().getYPos()), 2)
+							+ Math.pow((this.getLocation().getZPos() - this.getParent().getLocation().getZPos()), 2)));
 			if (distance > simulationParameters.EDGE_DEVICES_RANGE) {
 				setOrchestrator(this);
 				this.weight = originalWeight;
@@ -199,7 +203,9 @@ public class CustomEdgeDevice extends DefaultDataCenter {
 						.pow((this.getLocation().getXPos() - simulationManager.getServersManager().getDatacenterList()
 								.get(i).getLocation().getXPos()), 2)
 						+ Math.pow((this.getLocation().getYPos() - simulationManager.getServersManager()
-								.getDatacenterList().get(i).getLocation().getYPos()), 2)));
+								.getDatacenterList().get(i).getLocation().getYPos()), 2)
+						+ Math.pow((this.getLocation().getZPos() - simulationManager.getServersManager()
+								.getDatacenterList().get(i).getLocation().getZPos()), 2)));
 				if (distance <= simulationParameters.EDGE_DEVICES_RANGE) {
 					// neighbors
 					if (this.weight < ((CustomEdgeDevice) simulationManager.getServersManager().getDatacenterList()

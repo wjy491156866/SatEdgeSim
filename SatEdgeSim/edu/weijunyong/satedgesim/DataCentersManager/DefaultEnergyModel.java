@@ -39,11 +39,15 @@ public class DefaultEnergyModel extends EnergyModel {
 		double distance;
 		if (device1.getType() == TYPES.CLOUD || device2.getType() == TYPES.CLOUD || device1.getType() == TYPES.EDGE_DATACENTER
 				|| device2.getType() == TYPES.EDGE_DATACENTER) {
-			distance = 10;
+			distance = Math
+					.abs(Math.sqrt(Math.pow((device1.getLocation().getXPos() - device2.getLocation().getXPos()), 2)
+							+ Math.pow((device1.getLocation().getYPos() - device2.getLocation().getYPos()), 2)
+							+ Math.pow((device1.getLocation().getZPos() - device2.getLocation().getZPos()), 2)));
 		} else {
 			distance = Math
 					.abs(Math.sqrt(Math.pow((device1.getLocation().getXPos() - device2.getLocation().getXPos()), 2)
-							+ Math.pow((device1.getLocation().getYPos() - device2.getLocation().getYPos()), 2)));
+							+ Math.pow((device1.getLocation().getYPos() - device2.getLocation().getYPos()), 2)
+							+ Math.pow((device1.getLocation().getZPos() - device2.getLocation().getZPos()), 2)));
 		}
 
 		int sizeInBits = (int) (file.getFileSize() * 1000);

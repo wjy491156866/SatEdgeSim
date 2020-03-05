@@ -257,11 +257,7 @@ public class SimulationManager extends CloudSimEntity {
 
 			for (int i = 0; i < orchestratorsList.size(); i++) {
 				if (orchestratorsList.get(i).getType() != simulationParameters.TYPES.CLOUD) {
-					distance = Math.abs(Math.sqrt(Math
-							.pow((task.getEdgeDevice().getLocation().getXPos()
-									- orchestratorsList.get(i).getLocation().getXPos()), 2)
-							+ Math.pow((task.getEdgeDevice().getLocation().getYPos()
-									- orchestratorsList.get(i).getLocation().getYPos()), 2)));
+					distance = Orchestrator.getdistance(task.getEdgeDevice(),orchestratorsList.get(i));
 					if (min == -1 || min > distance) {
 						min = distance;
 						selected = i;
@@ -393,8 +389,10 @@ public class SimulationManager extends CloudSimEntity {
 	private boolean sameLocation(DataCenter Dev1, DataCenter Dev2) {
 		if (Dev1.getType() == TYPES.CLOUD || Dev2.getType() == TYPES.CLOUD)
 			return true;
-		double distance = Math.abs(Math.sqrt(Math.pow((Dev1.getLocation().getXPos() - Dev2.getLocation().getXPos()), 2)
-				+ Math.pow((Dev1.getLocation().getYPos() - Dev2.getLocation().getYPos()), 2)));
+		//double distance = Math.abs(Math.sqrt(Math.pow((Dev1.getLocation().getXPos() - Dev2.getLocation().getXPos()), 2)
+		//		+ Math.pow((Dev1.getLocation().getYPos() - Dev2.getLocation().getYPos()), 2)
+		//		+ Math.pow((Dev1.getLocation().getYPos() - Dev2.getLocation().getYPos()), 2)));
+		double distance = Orchestrator.getdistance(Dev1,Dev2);
 		int RANGE = simulationParameters.EDGE_DEVICES_RANGE;
 		if (Dev1.getType() != Dev2.getType()) // One of them is an edge data center and the other is an edge device
 			RANGE = simulationParameters.EDGE_DATACENTERS_RANGE;
