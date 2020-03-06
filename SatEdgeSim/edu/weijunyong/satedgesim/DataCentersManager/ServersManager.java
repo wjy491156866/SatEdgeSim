@@ -357,9 +357,9 @@ public class ServersManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        double xPos = Double.parseDouble(i1);
-        double yPos = Double.parseDouble(i2);
-        double zPos = Double.parseDouble(i3);
+        double xPos = Double.parseDouble(i1)*1000;
+        double yPos = Double.parseDouble(i2)*1000;
+        double zPos = Double.parseDouble(i3)*1000;
         double Geohigh = Math.abs(Math.sqrt(Math.pow(xPos, 2)+ Math.pow(yPos, 2)+ Math.pow(zPos, 2)));
         if(simulationParameters.EARTH_RADIUS > Geohigh) {
             System.out.println(fileName + " Incorrect data. Time is: " +time);

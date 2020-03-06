@@ -96,7 +96,7 @@ public class FilesParser {
 			//		.parseInt(prop.getProperty("edge_device_counter_size").trim());
 			simulationParameters.EDGE_DEVICE_COUNTER_STEP = simulationParameters.MAX_NUM_OF_EDGE_DEVICES 
 					/simulationParameters.EDGE_DEVICE_COUNTER_TIME;
-			String fileNameedge = simulationParameters.LocationFolder + "edge_devices/edge1.csv";
+			String fileNameedge = simulationParameters.LocationFolder + "edge_devices/mist1.csv";
 			simulationParameters.LOCATIONTIMENUM = Getlocationtimenum(fileNameedge);
 			//simulationParameters.SPEED = Double.parseDouble(prop.getProperty("speed").trim()); // meters per second m/s
 			
