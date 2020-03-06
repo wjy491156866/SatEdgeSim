@@ -51,9 +51,11 @@ public class simulationParameters {
 	public static int WAN_BANDWIDTH;              // wan (cloud) bandwidth (in kbits/s) 
 	public static double POWER_CONS_PER_MEGABYTE; // Power consumption by every transferred MBytes (in Wh)
 	public static double NETWORK_UPDATE_INTERVAL; // Network model update interval (in seconds) 
-	public static double WAN_PROPAGATION_DELAY;   // Wan propagation delay (in seconds)
+	//public static double WAN_PROPAGATION_DELAY;   // Wan propagation delay (in seconds)
+	public static double WAN_PROPAGATION_SPEED;   // Wan propagation speed (in meters/seconds)
 	public static int EDGE_DEVICES_RANGE;         // The range of edge devices (in meters)
 	public static int EDGE_DATACENTERS_RANGE;     // The range of edge servers (in meters)
+	public static int CLOUD_RANGE;     			  // The range of cloud (in meters)
 	
 	// Energy model parameters
 	public static double AMPLIFIER_DISSIPATION_FREE_SPACE; // The power consumption for each transferred bit (in joul per bit :  J/bit)

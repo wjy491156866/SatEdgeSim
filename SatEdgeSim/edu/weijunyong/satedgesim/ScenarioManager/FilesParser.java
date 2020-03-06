@@ -73,6 +73,7 @@ public class FilesParser {
 
 			simulationParameters.EDGE_DEVICES_RANGE = Integer.parseInt(prop.getProperty("edge_devices_range").trim()); // meters
 			simulationParameters.EDGE_DATACENTERS_RANGE = Integer.parseInt(prop.getProperty("edge_datacenters_coverage").trim()); // meters
+			simulationParameters.CLOUD_RANGE = Integer.parseInt(prop.getProperty("cloud_coverage").trim()); // meters
 			simulationParameters.PAUSE_LENGTH = Integer.parseInt(prop.getProperty("pause_length").trim());// seconds
 			
 			simulationParameters.EDGE_DEVICE_COUNTER_TIME = Integer
@@ -105,8 +106,11 @@ public class FilesParser {
 			simulationParameters.WAN_BANDWIDTH = 1000 * Integer.parseInt(prop.getProperty("wan_bandwidth").trim());// Mbits/s
 																													// to
 																													// Kbits/s
-			simulationParameters.WAN_PROPAGATION_DELAY = Double
-					.parseDouble(prop.getProperty("wan_propogation_delay").trim()); // seconds
+			//simulationParameters.WAN_PROPAGATION_DELAY = Double
+			//		.parseDouble(prop.getProperty("wan_propogation_delay").trim()); // seconds
+			simulationParameters.WAN_PROPAGATION_SPEED = Double
+							.parseDouble(prop.getProperty("wan_propogation_speed").trim()); // seconds
+			
 			simulationParameters.NETWORK_UPDATE_INTERVAL = Double
 					.parseDouble(prop.getProperty("network_update_interval").trim()); // seconds
 			simulationParameters.CPU_ALLOCATION_POLICY = prop.getProperty("Applications_CPU_allocation_policy").trim();

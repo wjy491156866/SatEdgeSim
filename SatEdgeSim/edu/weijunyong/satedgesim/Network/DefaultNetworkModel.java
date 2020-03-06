@@ -9,6 +9,7 @@ import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters.TYPES;
 import edu.weijunyong.satedgesim.SimulationManager.SimulationManager;
 import edu.weijunyong.satedgesim.TasksGenerator.Task;
+import edu.weijunyong.satedgesim.TasksOrchestration.Orchestrator;
 
 public class DefaultNetworkModel extends NetworkModel {
 
@@ -178,28 +179,33 @@ public class DefaultNetworkModel extends NetworkModel {
 		// If it is an offlaoding request that is sent to the orchestrator
 		if (transfer.getTransferType() == FileTransferProgress.Type.REQUEST) {
 			offloadingRequestRecievedByOrchestrator(transfer);
+			//transfer.getTask().getEdgeDevice(), transfer.getTask().getOrchestrator()
 			updateEnergyConsumption(transfer, "Orchestrator");
 		}
 		// If it is an task (or offloading request) that is sent to the destination
 		else if (transfer.getTransferType() == FileTransferProgress.Type.TASK) {
 			transfer.getTask().setReceptionTime(simulationManager.getSimulation().clock());
 			executeTaskOrDownloadContainer(transfer);
+			//transfer.getTask().getOrchestrator(),((DataCenter) transfer.getTask().getVm().getHost().getDatacenter())
 			updateEnergyConsumption(transfer, "Destination");
 		}
 		// If the container has been downloaded, then execute the task now
 		else if (transfer.getTransferType() == FileTransferProgress.Type.CONTAINER) { 
 			transfer.getTask().setReceptionTime(simulationManager.getSimulation().clock());
 			containerDownloadFinished(transfer);
+			//transfer.getTask().getRegistry(),transfer.getTask().getEdgeDevice()
 			updateEnergyConsumption(transfer, "Container");
 		}
 		// If the transfer of execution results to the orchestrator has finished
 		else if (transfer.getTransferType() == FileTransferProgress.Type.RESULTS_TO_ORCH) {
 			returnResultToDevice(transfer);
+			//(DataCenter) transfer.getTask().getVm().getHost().getDatacenter()),transfer.getTask().getOrchestrator()
 			updateEnergyConsumption(transfer, "Result_Orchestrator");
 		}
 		// Results transferred to the device
 		else {
 			resultsReturnedToDevice(transfer);
+			//transfer.getTask().getOrchestrator(), transfer.getTask().getEdgeDevice()
 			updateEnergyConsumption(transfer, "Result_Origin");
 		}
 
@@ -216,9 +222,12 @@ public class DefaultNetworkModel extends NetworkModel {
 	protected void returnResultToDevice(FileTransferProgress transfer) {
 		// if the results are returned from the cloud, consider the wan propagation delay
 		if (transfer.getTask().getOrchestrator().getType().equals(TYPES.CLOUD)
-				|| ((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()).getType().equals(TYPES.CLOUD))
-			schedule(this, simulationParameters.WAN_PROPAGATION_DELAY, DefaultNetworkModel.SEND_RESULT_FROM_ORCH_TO_DEV,
+				|| ((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()).getType().equals(TYPES.CLOUD)) {
+			double WAN_PROPAGATION_DELAY = Getpropagationdelay((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()
+					, transfer.getTask().getOrchestrator());
+			schedule(this, WAN_PROPAGATION_DELAY, DefaultNetworkModel.SEND_RESULT_FROM_ORCH_TO_DEV,
 					transfer.getTask());
+		}
 		else
 			scheduleNow(this, DefaultNetworkModel.SEND_RESULT_FROM_ORCH_TO_DEV, transfer.getTask());
 
@@ -233,9 +242,12 @@ public class DefaultNetworkModel extends NetworkModel {
 
 		} else {// if the registry is disabled, execute directly the request, as it represents
 				// the offloaded task in this case
-			if (((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()).getType().equals(TYPES.CLOUD))
-				schedule(simulationManager, simulationParameters.WAN_PROPAGATION_DELAY, SimulationManager.EXECUTE_TASK,
+			if (((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()).getType().equals(TYPES.CLOUD)) {
+				double WAN_PROPAGATION_DELAY = Getpropagationdelay(transfer.getTask().getOrchestrator()
+						,((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()));
+				schedule(simulationManager, WAN_PROPAGATION_DELAY, SimulationManager.EXECUTE_TASK,
 						transfer.getTask());
+			}
 			else
 				scheduleNow(simulationManager, SimulationManager.EXECUTE_TASK, transfer.getTask());
 		}
@@ -243,9 +255,12 @@ public class DefaultNetworkModel extends NetworkModel {
 
 	protected void offloadingRequestRecievedByOrchestrator(FileTransferProgress transfer) {
 		// Find the offloading destination and execute the task
-		if (transfer.getTask().getOrchestrator().getType().equals(TYPES.CLOUD))
-			schedule(simulationManager, simulationParameters.WAN_PROPAGATION_DELAY,
+		if (transfer.getTask().getOrchestrator().getType().equals(TYPES.CLOUD)) {
+			double WAN_PROPAGATION_DELAY = Getpropagationdelay(transfer.getTask().getEdgeDevice()
+					, transfer.getTask().getOrchestrator());
+			schedule(simulationManager, WAN_PROPAGATION_DELAY,
 					SimulationManager.SEND_TASK_FROM_ORCH_TO_DESTINATION, transfer.getTask());
+		}
 		else
 			scheduleNow(simulationManager, SimulationManager.SEND_TASK_FROM_ORCH_TO_DESTINATION, transfer.getTask());
 	}
@@ -253,6 +268,12 @@ public class DefaultNetworkModel extends NetworkModel {
 	@Override
 	protected void startEntity() {
 		schedule(this, 1, UPDATE_PROGRESS);
+	}
+	
+	public double Getpropagationdelay(DataCenter origin, DataCenter destination) {
+		double distance = Orchestrator.getdistance(origin,destination);
+		double propagationdelay = distance / simulationParameters.WAN_PROPAGATION_SPEED;
+		return propagationdelay;
 	}
 
 }

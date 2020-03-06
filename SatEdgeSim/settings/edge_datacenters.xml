@@ -50,5 +50,1155 @@
 			</host>
 		</hosts>
 	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>2</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>3</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>4</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>5</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>6</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>7</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>8</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>9</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>10</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>11</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>12</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>13</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>14</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>15</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>16</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>17</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>18</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>19</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>20</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>21</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>22</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>23</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<idleConsumption>0.00015</idleConsumption> 
+		<maxConsumption>0.016</maxConsumption> 
+		<isOrchestrator>false</isOrchestrator>   
+		<location>
+			<edcID>24</edcID>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+			<host>
+				<core>8</core>
+				<mips>800000</mips>
+				<ram>16000</ram> 
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM>
+					<VM vmm="Xen">
+						<core>4</core>
+						<mips>200000</mips>
+						<ram>4000</ram>
+						<storage>20000</storage>
+					</VM> 
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
 	
 </edge_datacenters>

@@ -7,7 +7,6 @@ import org.cloudbus.cloudsim.vms.Vm;
 
 import edu.weijunyong.satedgesim.DataCentersManager.DataCenter;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
-import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters.TYPES;
 import edu.weijunyong.satedgesim.SimulationManager.SimLog;
 import edu.weijunyong.satedgesim.SimulationManager.SimulationManager;
 import edu.weijunyong.satedgesim.TasksGenerator.Task;
@@ -114,14 +113,13 @@ public abstract class Orchestrator {
 	}
 
 	protected boolean sameLocation(DataCenter device1, DataCenter device2, int RANGE) {
-		if (device2.getType() == TYPES.CLOUD)
-			return true;
-		//double distance = Math
-		//		.abs(Math.sqrt(Math.pow((device1.getLocation().getXPos() - device2.getLocation().getXPos()), 2)
-		//				+ Math.pow((device1.getLocation().getYPos() - device2.getLocation().getYPos()), 2)
-		//				+ Math.pow((device1.getLocation().getZPos() - device2.getLocation().getZPos()), 2)));
 		double distance = getdistance(device1, device2);
-		return (distance < RANGE);
+		if (distance < RANGE && issetlink(device1, device2)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public static boolean issetlink(DataCenter device1, DataCenter device2) {	//几何可见建立链路
@@ -134,8 +132,6 @@ public abstract class Orchestrator {
 		else
 			return false;	
 	}
-	
-	//
 	
 	public static double getdistance(DataCenter device1, DataCenter device2) { //distance
 		return Math.abs(Math.sqrt(Math.pow((device1.getLocation().getXPos() - device2.getLocation().getXPos()), 2)
@@ -158,28 +154,30 @@ public abstract class Orchestrator {
 
 	protected boolean offloadingIsPossible(Task task, Vm vm, String[] architecture) {
 		simulationParameters.TYPES vmType = ((DataCenter)vm.getHost().getDatacenter()).getType();
-		return ((arrayContains(architecture, "Cloud") && vmType == simulationParameters.TYPES.CLOUD) // cloud computing
+		return ((arrayContains(architecture, "Cloud") && vmType == simulationParameters.TYPES.CLOUD // cloud computing
+				// compare destination (edge data center) location and origin (edge device) location, if they
+				// are in same area offload to his device
+				&& (sameLocation(((DataCenter) vm.getHost().getDatacenter()), task.getEdgeDevice(),simulationParameters.CLOUD_RANGE)
+								// or compare the location of their orchestrators
+				|| (simulationParameters.ENABLE_ORCHESTRATORS && sameLocation(((DataCenter) vm.getHost().getDatacenter()),
+												task.getOrchestrator(), simulationParameters.CLOUD_RANGE))))
 				|| (arrayContains(architecture, "Edge") && vmType == simulationParameters.TYPES.EDGE_DATACENTER // Edge computing
 				// compare destination (edge data center) location and origin (edge device) location, if they
 				// are in same area offload to his device
-						&& (sameLocation(((DataCenter) vm.getHost().getDatacenter()), task.getEdgeDevice(),
-								simulationParameters.EDGE_DATACENTERS_RANGE)
+				&& (sameLocation(((DataCenter) vm.getHost().getDatacenter()), task.getEdgeDevice(),simulationParameters.EDGE_DATACENTERS_RANGE)
 								// or compare the location of their orchestrators
-								|| (simulationParameters.ENABLE_ORCHESTRATORS
-										&& sameLocation(((DataCenter) vm.getHost().getDatacenter()),
+				|| (simulationParameters.ENABLE_ORCHESTRATORS && sameLocation(((DataCenter) vm.getHost().getDatacenter()),
 												task.getOrchestrator(), simulationParameters.EDGE_DATACENTERS_RANGE))))
-
 				|| (arrayContains(architecture, "Mist") && vmType == simulationParameters.TYPES.EDGE_DEVICE // Mist computing
 				// compare destination (edge device) location and origin (edge device) location, if
 				// they are in same area offload to his device
-						&& (sameLocation(((DataCenter) vm.getHost().getDatacenter()), task.getEdgeDevice(),
-								simulationParameters.EDGE_DEVICES_RANGE)
+				&& (sameLocation(((DataCenter) vm.getHost().getDatacenter()), task.getEdgeDevice(),simulationParameters.EDGE_DEVICES_RANGE)
 								// or compare the location of their orchestrators
-								|| (simulationParameters.ENABLE_ORCHESTRATORS
-										&& sameLocation(((DataCenter) vm.getHost().getDatacenter()),
+				|| (simulationParameters.ENABLE_ORCHESTRATORS && sameLocation(((DataCenter) vm.getHost().getDatacenter()),
 												task.getOrchestrator(), simulationParameters.EDGE_DEVICES_RANGE))
-										&& ((DataCenter) vm.getHost().getDatacenter()).isDead())));
+				&& ((DataCenter) vm.getHost().getDatacenter()).isDead())));
 	}
+	//{A && B && [C ||(D && E)]} || {A && B && [C ||(D && E)]} || {A && B && [C ||(D && E) && F]}
 
 	public abstract void resultsReturned(Task task);
 
