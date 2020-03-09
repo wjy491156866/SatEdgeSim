@@ -4,15 +4,15 @@
 		of this type there will be in this case , there are 4 types of devices(defined 
 		here), 30 percent of all devices will be of the first type, this percentage 
 		is defined here <percentage> -->
-		
+
 	<device arch="x86" os="linux" vmm="xen"> <!-- this is a smartphone, for example -->
-	
+
 		<mobility>true</mobility><!-- the device is mobile or fixed -->
 		<battery>true</battery> <!-- relies on battery? -->
 		<percentage>30</percentage> <!-- percentage of this device type -->
 		<batteryCapacity>18.75</batteryCapacity> <!-- battery capacity in Watt-Hour -->
-		<idleConsumption>0.078</idleConsumption><!-- idle energy consumption/ 
-			second, default=0 .000010975 -->
+		<idleConsumption>0.078</idleConsumption><!-- idle energy consumption/ second, 
+			default=0 .000010975 -->
 		<maxConsumption>3.3</maxConsumption><!-- max energy consumption/second, 
 			when device cpu is use at 100% , default=0 .0011 -->
 		<isOrchestrator>false</isOrchestrator> <!-- it has a task orchestrator or not -->
@@ -28,7 +28,7 @@
 						<core>8</core>
 						<mips>25000</mips>
 						<ram>4000</ram>
-						<storage>128000</storage> <!--256MB of caching memory used in example 6 --> 
+						<storage>128000</storage> <!--256MB of caching memory used in example 6 -->
 					</VM>
 				</VMs>
 			</host>
@@ -60,7 +60,7 @@
 			</host>
 		</hosts>
 	</device>
-	<device arch="x86" os="linux" vmm="xen"> <!--  this is a laptop for example -->
+	<device arch="x86" os="linux" vmm="xen"> <!-- this is a laptop for example -->
 		<mobility>false</mobility>
 		<battery>true</battery>
 		<percentage>20</percentage>

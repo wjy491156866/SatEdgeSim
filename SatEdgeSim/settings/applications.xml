@@ -2,9 +2,13 @@
 <applications>
 	<application name="AUGMENTED_REALITY">
 		<max_delay>5</max_delay> <!-- latency in seconds -->
-		<container_size>25000</container_size><!--application/container size in kilobytes -->
-		<request_size>1500</request_size><!-- the offloading request that will be sent to the orchestrator and then to the device where the task will be offloaded in kilobytes -->
-		<results_size>100</results_size><!-- the results of the offlaoded task in kilobytes -->
+		<container_size>25000</container_size><!--application/container size in 
+			kilobytes -->
+		<request_size>1500</request_size><!-- the offloading request that will 
+			be sent to the orchestrator and then to the device where the task will be 
+			offloaded in kilobytes -->
+		<results_size>100</results_size><!-- the results of the offlaoded task 
+			in kilobytes -->
 		<task_length>60000</task_length><!--MI: million instructions -->
 		<required_core>1</required_core>
 		<poisson_interarrival>40</poisson_interarrival><!--lamda in seconds -->
@@ -26,5 +30,5 @@
 		<task_length>15000</task_length>
 		<required_core>1</required_core>
 		<poisson_interarrival>10</poisson_interarrival>
-	</application> 
+	</application>
 </applications>

@@ -11,7 +11,6 @@ import edu.weijunyong.satedgesim.DataCentersManager.DefaultDataCenter;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
 import edu.weijunyong.satedgesim.SimulationManager.SimulationManager;
 import edu.weijunyong.satedgesim.TasksGenerator.Task;
-import edu.weijunyong.satedgesim.TasksOrchestration.Orchestrator;
 
 public class CustomEdgeDevice extends DefaultDataCenter { 
 	private static final int UPDATE_CLUSTERS = 11000; // Avoid conflicting with CloudSim Plus Tags 
