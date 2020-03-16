@@ -32,7 +32,7 @@ public class DefaultMobilityModel extends Mobility {
     	Double y_position = locationPos[1];
     	Double z_position = locationPos[2];
     	currentLocation = new Location(x_position, y_position, z_position);
-    	System.out.println("DefaultMobilityModel: "+type + FID+ " Location is: "+ x_position+","+y_position+","+z_position);
+    	//System.out.println("DefaultMobilityModel: "+type + FID+ " Location is: "+ x_position+","+y_position+","+z_position);
 		return new Location(x_position, y_position, z_position);
 	}
 

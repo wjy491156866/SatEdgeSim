@@ -49,7 +49,9 @@ public class SimLog {
 	private int notGeneratedBecDeviceDead = 0;
 	private double totalExecutionTime = 0;
 	private double totalWaitingTime = 0;
+	private double totalEtedelayTime = 0;
 	private int executedTasksCount = 0;
+	private int EtedelayTasksCount = 0;
 	private int tasksExecutedOnCloud = 0;
 	private int tasksExecutedOnEdge = 0;
 	private int tasksExecutedOnMist = 0;
@@ -79,6 +81,7 @@ public class SimLog {
 		if (isFirstIteration) {
 			// Add the CSV file header
 			resultsList.add("Orchestration architecture,Orchestration algorithm,Edge devices count,"
+					+ "Tasks ETE delay (s),Average ETE delay (s),"
 					+ "Tasks execution delay (s),Average execution delay (s),Tasks waiting time (s),"
 					+ "Average wainting time (s),Generated tasks,Tasks successfully executed,"
 					+ "Task not executed (No resources available or long waiting time),Tasks failed (delay),Tasks failed (device dead),"
@@ -121,6 +124,10 @@ public class SimLog {
 				+ " % (" + tasksSent + " among " + generatedTasksCount + " generated tasks)");
 
 		print("-------------------------------------All values below are based on the sent tasks-------------------------------------");
+		print("SimLog- Tasks ETE delay                                                   :"
+				+ padLeftSpaces(decimalFormat.format(totalEtedelayTime), 20) + " seconds");
+		print("SimLog- Average tasks ETE delay                                           :"
+				+ padLeftSpaces(decimalFormat.format(totalEtedelayTime / EtedelayTasksCount), 20) + " seconds");
 		print("SimLog- Tasks execution delay                                                   :"
 				+ padLeftSpaces(decimalFormat.format(totalExecutionTime), 20) + " seconds");
 		print("SimLog- Average tasks execution delay                                           :"
@@ -158,6 +165,8 @@ public class SimLog {
 				+ (tasksExecutedOnMist - tasksFailedMist) + " were successfully executed )");
 
 		resultsList.add(currentOrchArchitecture + "," + currentOrchAlgorithm + "," + currentEdgeDevicesCount + ","
+				+ decimalFormat.format(totalEtedelayTime) + ","
+				+ decimalFormat.format(totalEtedelayTime / EtedelayTasksCount) + ","
 				+ decimalFormat.format(totalExecutionTime) + ","
 				+ decimalFormat.format(totalExecutionTime / executedTasksCount) + ","
 				+ decimalFormat.format(totalWaitingTime) + ","
@@ -532,6 +541,11 @@ public class SimLog {
 			// the task generation time
 			this.totalWaitingTime += task.getExecStartTime() - task.getTime();
 		this.executedTasksCount++;
+	}
+	
+	public void getTasksdelayInfos(Task task) {
+		this.totalEtedelayTime += task.getTaskFinishTime() - task.getTime();
+		this.EtedelayTasksCount++;
 	}
 
 	public void taskSentFromOrchToDest(Task task) {

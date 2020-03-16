@@ -7,6 +7,7 @@ import edu.weijunyong.satedgesim.DataCentersManager.DataCenter;
 
 public class Task extends CloudletSimple {
 	private double offloadingTime;
+	private double taskfinishTime;
 	private double maxLatency;
 	private DataCenter device;
 	private long containerSize;
@@ -32,6 +33,14 @@ public class Task extends CloudletSimple {
 
 	public double getTime() {
 		return offloadingTime;
+	}
+	
+	public void setTaskFinishTime(double time) {
+		this.taskfinishTime = time;
+	}
+
+	public double getTaskFinishTime() {
+		return taskfinishTime;
 	}
 
 	public double getMaxLatency() {

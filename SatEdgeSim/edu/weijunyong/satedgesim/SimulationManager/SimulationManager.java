@@ -130,6 +130,8 @@ public class SimulationManager extends CloudSimEntity {
 			if (taskFailed(task, 0))
 				return;
 			this.edgeOrchestrator.resultsReturned(task);
+			task.setTaskFinishTime(task.getSimulation().clock() - task.getTime()); //设置完成时间
+			simLog.getTasksdelayInfos(task);
 			tasksCount++;
 			break;
 
@@ -254,9 +256,19 @@ public class SimulationManager extends CloudSimEntity {
 			double min = -1;
 			int selected = 0;
 			double distance;
-
+			simulationParameters.TYPES type = null;
+			if ("".equals(simulationParameters.DEPLOY_ORCHESTRATOR)
+					|| ("CLOUD".equals(simulationParameters.DEPLOY_ORCHESTRATOR))) {
+				type = simulationParameters.TYPES.CLOUD;
+			} else if ("EDGE".equals(simulationParameters.DEPLOY_ORCHESTRATOR)) {
+				type = simulationParameters.TYPES.EDGE_DATACENTER;
+			} else if ("MIST".equals(simulationParameters.DEPLOY_ORCHESTRATOR)) {
+				type = simulationParameters.TYPES.EDGE_DEVICE;
+			}
+			
 			for (int i = 0; i < orchestratorsList.size(); i++) {
-				if (orchestratorsList.get(i).getType() != simulationParameters.TYPES.CLOUD) {
+				if (orchestratorsList.get(i).getType() == type 
+						&& Orchestrator.issetlink(task.getEdgeDevice(),orchestratorsList.get(i))) {
 					distance = Orchestrator.getdistance(task.getEdgeDevice(),orchestratorsList.get(i));
 					if (min == -1 || min > distance) {
 						min = distance;
@@ -352,6 +364,7 @@ public class SimulationManager extends CloudSimEntity {
 		}
 		// The task is failed due to long delay
 		if ((task.getSimulation().clock() - task.getTime()) > task.getMaxLatency()) {
+			//task.setTaskFinishTime(task.getSimulation().clock() - task.getTime());
 			task.setFailureReason(Task.Status.FAILED_DUE_TO_LATENCY);
 			simLog.incrementTasksFailedLatency(task);
 			setFailed(task);
@@ -384,19 +397,26 @@ public class SimulationManager extends CloudSimEntity {
 		failedTasksCount++;
 		tasksCount++;
 		this.edgeOrchestrator.resultsReturned(task);
+		task.setTaskFinishTime(task.getSimulation().clock() - task.getTime()); //设置完成时间
 	}
 
 	private boolean sameLocation(DataCenter Dev1, DataCenter Dev2) {
-		if (Dev1.getType() == TYPES.CLOUD || Dev2.getType() == TYPES.CLOUD)
-			return true;
-		//double distance = Math.abs(Math.sqrt(Math.pow((Dev1.getLocation().getXPos() - Dev2.getLocation().getXPos()), 2)
-		//		+ Math.pow((Dev1.getLocation().getYPos() - Dev2.getLocation().getYPos()), 2)
-		//		+ Math.pow((Dev1.getLocation().getYPos() - Dev2.getLocation().getYPos()), 2)));
-		double distance = Orchestrator.getdistance(Dev1,Dev2);
 		int RANGE = simulationParameters.EDGE_DEVICES_RANGE;
-		if (Dev1.getType() != Dev2.getType()) // One of them is an edge data center and the other is an edge device
+		if ((Dev1.getType() == TYPES.CLOUD && Dev2.getType() != TYPES.EDGE_DATACENTER) 
+				|| (Dev1.getType() != TYPES.EDGE_DATACENTER && Dev2.getType() == TYPES.CLOUD)) {
+			RANGE = simulationParameters.CLOUD_RANGE;
+		}
+		else if((Dev1.getType() == TYPES.EDGE_DATACENTER && Dev2.getType() != TYPES.CLOUD) 
+				|| (Dev1.getType() != TYPES.CLOUD && Dev2.getType() == TYPES.EDGE_DATACENTER)){
 			RANGE = simulationParameters.EDGE_DATACENTERS_RANGE;
-		return (distance < RANGE);
+		}
+		double distance = Orchestrator.getdistance(Dev1, Dev2);
+		if (distance < RANGE && Orchestrator.issetlink(Dev1, Dev2)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public void setServersManager(ServersManager serversManager) {

@@ -153,7 +153,7 @@ public class SimulationVisualizer {
 
 		wanUsage.add(wan);
 
-		while (wanUsage.size() > 300 / simulationParameters.UPDATE_INTERVAL) {
+		while (wanUsage.size() > simulationParameters.WAN_BANDWIDTH / simulationParameters.UPDATE_INTERVAL) {
 			wanUsage.remove(0);
 		}
 		double[] time = new double[wanUsage.size()];
@@ -163,6 +163,7 @@ public class SimulationVisualizer {
 
 		updateStyle(networkUtilizationChart,
 				new Double[] { currentTime - 200, currentTime, 0.0, simulationParameters.WAN_BANDWIDTH / 1000.0 });
+		//Double[]为坐标轴XY最小最大值
 		updateSeries(networkUtilizationChart, "WAN", time, toArray(wanUsage), SeriesMarkers.NONE, Color.BLACK); 
 	}
 	

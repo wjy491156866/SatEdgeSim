@@ -47,7 +47,12 @@ public class ChartsGenerator {
 		double[] results = new double[records.size() - 1];
 		int column = getColumnIndex(name);
 		for (int line = 1; line < records.size(); line++) {
-			results[line - 1] = Double.parseDouble(records.get(line)[column]);
+			if((records.get(line)[column]).compareTo("NaN") == 0) {
+				results[line - 1] = 0;
+			}
+			else {
+				results[line - 1] = Double.parseDouble(records.get(line)[column]);
+			}
 		}
 		return results;
 	}
@@ -125,7 +130,12 @@ public class ChartsGenerator {
 		int column = getColumnIndex(name);
 		for (int line = 1; line < records.size(); line++) {
 			if (records.get(line)[0].trim().equals(orch.trim()) && records.get(line)[1].trim().equals(alg.trim())) {
-				list.add(Double.parseDouble(records.get(line)[column]));
+				if((records.get(line)[column]).compareTo("NaN") == 0) {
+					list.add(0.0);
+				}
+				else {
+					list.add(Double.parseDouble(records.get(line)[column]));
+				}
 			}
 		}
 		return list;

@@ -89,6 +89,7 @@ public class DefaultEdgeOrchestrator extends Orchestrator {
 
 	@Override
 	public void resultsReturned(Task task) { 
+		
 	}
 
 }
