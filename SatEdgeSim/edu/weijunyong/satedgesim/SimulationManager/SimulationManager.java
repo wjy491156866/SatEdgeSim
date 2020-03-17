@@ -252,10 +252,7 @@ public class SimulationManager extends CloudSimEntity {
 		simLog.incrementTasksSent();
 
 		if (simulationParameters.ENABLE_ORCHESTRATORS) {
-			// Send the offloading request to the closest orchestrator
-			double min = -1;
-			int selected = 0;
-			double distance;
+			//get the orchestration deploy
 			simulationParameters.TYPES type = null;
 			if ("".equals(simulationParameters.DEPLOY_ORCHESTRATOR)
 					|| ("CLOUD".equals(simulationParameters.DEPLOY_ORCHESTRATOR))) {
@@ -264,27 +261,41 @@ public class SimulationManager extends CloudSimEntity {
 				type = simulationParameters.TYPES.EDGE_DATACENTER;
 			} else if ("MIST".equals(simulationParameters.DEPLOY_ORCHESTRATOR)) {
 				type = simulationParameters.TYPES.EDGE_DEVICE;
+			} else {
+				SimLog.println("");
+				SimLog.println("SimulationManager- Unknnown orchestration deploy '" + simulationParameters.DEPLOY_ORCHESTRATOR
+						+ "', please check the simulation parameters file...");
+				// Cancel the simulation
+				Runtime.getRuntime().exit(0);
 			}
 			
-			for (int i = 0; i < orchestratorsList.size(); i++) {
-				if (orchestratorsList.get(i).getType() == type 
-						&& Orchestrator.issetlink(task.getEdgeDevice(),orchestratorsList.get(i))) {
-					distance = Orchestrator.getdistance(task.getEdgeDevice(),orchestratorsList.get(i));
-					if (min == -1 || min > distance) {
-						min = distance;
-						selected = i;
+			if (task.getEdgeDevice().getType() == type) //if the orchestration deploy is the same with task davice, set itself  Orchestrator
+			{
+				task.setOrchestrator(task.getEdgeDevice());
+			}
+			else {
+				// Send the offloading request to the closest orchestrator
+				double min = -1;
+				int selected = 0;
+				double distance;
+				for (int i = 0; i < orchestratorsList.size(); i++) {
+					if (orchestratorsList.get(i).getType() == type 
+							&& Orchestrator.issetlink(task.getEdgeDevice(),orchestratorsList.get(i))) {
+						distance = Orchestrator.getdistance(task.getEdgeDevice(),orchestratorsList.get(i));
+						if (min == -1 || min > distance) {
+							min = distance;
+							selected = i;
+						}
 					}
 				}
+				if (orchestratorsList.size() == 0) {
+					simLog.printSameLine("SimulationManager- Error no orchestrator found", "red");
+					tasksCount++;
+					return;
+				}
+				task.setOrchestrator(orchestratorsList.get(selected));
 			}
-
-			if (orchestratorsList.size() == 0) {
-				simLog.printSameLine("SimulationManager- Error no orchestrator found", "red");
-				tasksCount++;
-				return;
-			}
-			task.setOrchestrator(orchestratorsList.get(selected));
 		}
-
 		scheduleNow(networkModel, NetworkModel.SEND_REQUEST_FROM_DEVICE_TO_ORCH, task);
 	}
 

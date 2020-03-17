@@ -220,9 +220,9 @@ public class DefaultNetworkModel extends NetworkModel {
 	}
 
 	protected void returnResultToDevice(FileTransferProgress transfer) {
-		// if the results are returned from the cloud, consider the wan propagation delay
-		if (transfer.getTask().getOrchestrator().getType().equals(TYPES.CLOUD)
-				|| ((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()).getType().equals(TYPES.CLOUD)) {
+		// if the results are returned from different location, consider the wan propagation delay
+		if (transfer.getTask().getOrchestrator() != ((DataCenter) transfer.getTask().getVm().getHost().getDatacenter())) {
+			
 			double WAN_PROPAGATION_DELAY = Getpropagationdelay((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()
 					, transfer.getTask().getOrchestrator());
 			schedule(this, WAN_PROPAGATION_DELAY, DefaultNetworkModel.SEND_RESULT_FROM_ORCH_TO_DEV,
@@ -242,7 +242,7 @@ public class DefaultNetworkModel extends NetworkModel {
 
 		} else {// if the registry is disabled, execute directly the request, as it represents
 				// the offloaded task in this case
-			if (((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()).getType().equals(TYPES.CLOUD)) {
+			if (((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()) != transfer.getTask().getOrchestrator()) {
 				double WAN_PROPAGATION_DELAY = Getpropagationdelay(transfer.getTask().getOrchestrator()
 						,((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()));
 				schedule(simulationManager, WAN_PROPAGATION_DELAY, SimulationManager.EXECUTE_TASK,
@@ -255,7 +255,7 @@ public class DefaultNetworkModel extends NetworkModel {
 
 	protected void offloadingRequestRecievedByOrchestrator(FileTransferProgress transfer) {
 		// Find the offloading destination and execute the task
-		if (transfer.getTask().getOrchestrator().getType().equals(TYPES.CLOUD)) {
+		if (transfer.getTask().getOrchestrator() != transfer.getTask().getEdgeDevice()) {
 			double WAN_PROPAGATION_DELAY = Getpropagationdelay(transfer.getTask().getEdgeDevice()
 					, transfer.getTask().getOrchestrator());
 			schedule(simulationManager, WAN_PROPAGATION_DELAY,

@@ -37,6 +37,7 @@ import edu.weijunyong.satedgesim.LocationManager.Location;
 import edu.weijunyong.satedgesim.LocationManager.Mobility;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters.TYPES;
+import edu.weijunyong.satedgesim.SimulationManager.SimLog;
 import edu.weijunyong.satedgesim.SimulationManager.SimulationManager;
 
 public class ServersManager {
@@ -86,6 +87,12 @@ public class ServersManager {
 					&& edgeDataCenter.getType() == simulationParameters.TYPES.EDGE_DEVICE) {
 				edgeDataCenter.setOrchestrator(true);
 				orchestratorsList.add(edgeDataCenter);
+			} else {
+				SimLog.println("");
+				SimLog.println("ServersManager- Unknnown orchestration deploy '" + simulationParameters.DEPLOY_ORCHESTRATOR
+						+ "', please check the simulation parameters file...");
+				// Cancel the simulation
+				Runtime.getRuntime().exit(0);
 			}
 		}
 
