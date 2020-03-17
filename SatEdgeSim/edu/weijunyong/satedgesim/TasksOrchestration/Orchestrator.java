@@ -124,13 +124,18 @@ public abstract class Orchestrator {
 	
 	public static boolean issetlink(DataCenter device1, DataCenter device2) {	//几何可见建立链路
 		double h1 = getHight(device1), h2 = getHight(device2), d = getdistance(device1, device2);
-		double p = (h1 + h2 + d)/2;
-		double L = 2*(Math.sqrt(p*(p-h1)*(p-h1)*(p-h2)))/d;
-		if(L > simulationParameters.MIN_HEIGHT + simulationParameters.EARTH_RADIUS) {
+		if(d == 0) {
 			return true;
+		}else
+		{
+			double p = (h1 + h2 + d)/2;
+			double L = 2*(Math.sqrt(p*(p-h1)*(p-h1)*(p-h2)))/d;
+			if(L > simulationParameters.MIN_HEIGHT + simulationParameters.EARTH_RADIUS) {
+				return true;
+			}
+			else
+				return false;
 		}
-		else
-			return false;	
 	}
 	
 	public static double getdistance(DataCenter device1, DataCenter device2) { //distance

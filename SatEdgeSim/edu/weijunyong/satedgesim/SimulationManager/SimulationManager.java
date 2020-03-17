@@ -130,7 +130,7 @@ public class SimulationManager extends CloudSimEntity {
 			if (taskFailed(task, 0))
 				return;
 			this.edgeOrchestrator.resultsReturned(task);
-			task.setTaskFinishTime(task.getSimulation().clock() - task.getTime()); //设置完成时间
+			task.setTaskFinishTime(task.getSimulation().clock()); //设置完成时间
 			simLog.getTasksdelayInfos(task);
 			tasksCount++;
 			break;
@@ -374,7 +374,7 @@ public class SimulationManager extends CloudSimEntity {
 		// device mobility, if the vm location doesn't match
 		// the edge device location (that generated this task)
 		if (phase == 1 && task.getOrchestrator() != null
-				&& task.getOrchestrator().getType() != simulationParameters.TYPES.CLOUD
+				//&& task.getOrchestrator().getType() != simulationParameters.TYPES.CLOUD
 				&& !sameLocation(task.getEdgeDevice(), task.getOrchestrator())) {
 			task.setFailureReason(Task.Status.FAILED_DUE_TO_DEVICE_MOBILITY);
 			simLog.incrementTasksFailedMobility(task);
@@ -382,8 +382,8 @@ public class SimulationManager extends CloudSimEntity {
 			return true;
 		}
 		if (phase == 2 && (task.getVm().getHost().getDatacenter()) != null
-				&& ((DataCenter) task.getVm().getHost().getDatacenter())
-						.getType() != simulationParameters.TYPES.CLOUD
+				//&& ((DataCenter) task.getVm().getHost().getDatacenter())
+				//		.getType() != simulationParameters.TYPES.CLOUD
 				&& !sameLocation(task.getEdgeDevice(), ((DataCenter) task.getVm().getHost().getDatacenter()))) {
 			task.setFailureReason(Task.Status.FAILED_DUE_TO_DEVICE_MOBILITY);
 			simLog.incrementTasksFailedMobility(task);
@@ -397,7 +397,7 @@ public class SimulationManager extends CloudSimEntity {
 		failedTasksCount++;
 		tasksCount++;
 		this.edgeOrchestrator.resultsReturned(task);
-		task.setTaskFinishTime(task.getSimulation().clock() - task.getTime()); //设置完成时间
+		task.setTaskFinishTime(task.getSimulation().clock()); //设置完成时间
 	}
 
 	private boolean sameLocation(DataCenter Dev1, DataCenter Dev2) {
@@ -412,9 +412,11 @@ public class SimulationManager extends CloudSimEntity {
 		}
 		double distance = Orchestrator.getdistance(Dev1, Dev2);
 		if (distance < RANGE && Orchestrator.issetlink(Dev1, Dev2)) {
+			//System.out.println("Simulation"+ Dev1.getId()+" the same location with"+ Dev2.getId());
 			return true;
 		}
 		else {
+			//System.out.println("Simulation"+ Dev1.getId()+" not the same location with"+ Dev2.getId());
 			return false;
 		}
 	}

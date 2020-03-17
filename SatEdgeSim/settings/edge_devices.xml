@@ -8,7 +8,7 @@
 	<device arch="x86" os="linux" vmm="xen"> <!-- this is a smartphone, for example -->
 
 		<mobility>true</mobility><!-- the device is mobile or fixed -->
-		<battery>true</battery> <!-- relies on battery? -->
+		<battery>false</battery> <!-- relies on battery? -->
 		<percentage>30</percentage> <!-- percentage of this device type -->
 		<batteryCapacity>18.75</batteryCapacity> <!-- battery capacity in Watt-Hour -->
 		<idleConsumption>0.078</idleConsumption><!-- idle energy consumption/ second, 
@@ -35,7 +35,7 @@
 		</hosts>
 	</device>
 	<device arch="x86" os="linux" vmm="xen"> <!-- this is a small server -->
-		<mobility>false</mobility>
+		<mobility>true</mobility>
 		<battery>false</battery>
 		<percentage>10</percentage>
 		<batteryCapacity>0</batteryCapacity>
@@ -61,8 +61,8 @@
 		</hosts>
 	</device>
 	<device arch="x86" os="linux" vmm="xen"> <!-- this is a laptop for example -->
-		<mobility>false</mobility>
-		<battery>true</battery>
+		<mobility>true</mobility>
+		<battery>false</battery>
 		<percentage>20</percentage>
 		<batteryCapacity>56.2</batteryCapacity>
 		<idleConsumption>1.7</idleConsumption>
@@ -87,7 +87,7 @@
 		</hosts>
 	</device>
 	<device arch="x86" os="linux" vmm="xen">
-		<mobility>false</mobility>
+		<mobility>true</mobility>
 		<battery>false</battery>
 		<percentage>40</percentage>
 		<batteryCapacity>0</batteryCapacity>
