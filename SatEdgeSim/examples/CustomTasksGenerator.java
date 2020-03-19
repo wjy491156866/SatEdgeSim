@@ -10,7 +10,6 @@ import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters.TYPES;
 import edu.weijunyong.satedgesim.SimulationManager.SimulationManager;
 import edu.weijunyong.satedgesim.TasksGenerator.Task;
 import edu.weijunyong.satedgesim.TasksGenerator.TasksGenerator;
-import edu.weijunyong.satedgesim.TasksOrchestration.Orchestrator;
 
 public class CustomTasksGenerator extends TasksGenerator {
 	public CustomTasksGenerator(SimulationManager simulationManager) {
@@ -56,8 +55,8 @@ public class CustomTasksGenerator extends TasksGenerator {
 		
 		for (int Registrydev = 0; Registrydev < datacentersList.size(); Registrydev++) {
 			if (datacentersList.get(Registrydev).getType() == TYPES.CLOUD  
-					&&  Orchestrator.issetlink(datacentersList.get(Registrydev),datacentersList.get(dev))) {
-				double dis = Orchestrator.getdistance(datacentersList.get(Registrydev),datacentersList.get(dev));
+					&&  SimulationManager.issetlink(datacentersList.get(Registrydev),datacentersList.get(dev))) {
+				double dis = SimulationManager.getdistance(datacentersList.get(Registrydev),datacentersList.get(dev));
 				if (min == -1 || min > dis) {
 					min = dis;
 					selected = Registrydev;

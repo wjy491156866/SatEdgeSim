@@ -6,10 +6,9 @@ import org.cloudbus.cloudsim.core.events.SimEvent;
 import edu.weijunyong.satedgesim.DataCentersManager.DataCenter;
 import edu.weijunyong.satedgesim.DataCentersManager.DefaultEnergyModel;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
-import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters.TYPES;
+import edu.weijunyong.satedgesim.SimulationManager.SimLog;
 import edu.weijunyong.satedgesim.SimulationManager.SimulationManager;
 import edu.weijunyong.satedgesim.TasksGenerator.Task;
-import edu.weijunyong.satedgesim.TasksOrchestration.Orchestrator;
 
 public class DefaultNetworkModel extends NetworkModel {
 
@@ -78,7 +77,7 @@ public class DefaultNetworkModel extends NetworkModel {
 	}
 
 	public void sendRequestFromDeviceToOrch(Task task) {
-		if (task.getOrchestrator() != task.getEdgeDevice())
+		if (task.getOrchestrator() != task.getEdgeDevice())  //协调器非本设备
 			transferProgressList
 					.add(new FileTransferProgress(task, task.getFileSize() * 8, FileTransferProgress.Type.REQUEST));
 		else // The device orchestrate its tasks by itself, so, send the request directly to
@@ -203,7 +202,7 @@ public class DefaultNetworkModel extends NetworkModel {
 			updateEnergyConsumption(transfer, "Result_Orchestrator");
 		}
 		// Results transferred to the device
-		else {
+		else {		//transfer.getTransferType() == FileTransferProgress.Type.RESULTS_TO_DEV
 			resultsReturnedToDevice(transfer);
 			//transfer.getTask().getOrchestrator(), transfer.getTask().getEdgeDevice()
 			updateEnergyConsumption(transfer, "Result_Origin");
@@ -216,13 +215,22 @@ public class DefaultNetworkModel extends NetworkModel {
 	}
 
 	protected void resultsReturnedToDevice(FileTransferProgress transfer) {
-		scheduleNow(simulationManager, SimulationManager.RESULT_RETURN_FINISHED, transfer.getTask());
+		// if the results are returned from different location, consider the wan propagation delay
+		if (transfer.getTask().getOrchestrator() != transfer.getTask().getEdgeDevice()) {
+			double WAN_PROPAGATION_DELAY = Getpropagationdelay(transfer.getTask().getOrchestrator()
+					,transfer.getTask().getEdgeDevice());
+			schedule(simulationManager, WAN_PROPAGATION_DELAY, SimulationManager.RESULT_RETURN_FINISHED,
+					transfer.getTask());
+		}
+		else
+			scheduleNow(simulationManager, SimulationManager.RESULT_RETURN_FINISHED, transfer.getTask());
 	}
+		//scheduleNow(simulationManager, SimulationManager.RESULT_RETURN_FINISHED, transfer.getTask());
+	//}
 
 	protected void returnResultToDevice(FileTransferProgress transfer) {
 		// if the results are returned from different location, consider the wan propagation delay
 		if (transfer.getTask().getOrchestrator() != ((DataCenter) transfer.getTask().getVm().getHost().getDatacenter())) {
-			
 			double WAN_PROPAGATION_DELAY = Getpropagationdelay((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()
 					, transfer.getTask().getOrchestrator());
 			schedule(this, WAN_PROPAGATION_DELAY, DefaultNetworkModel.SEND_RESULT_FROM_ORCH_TO_DEV,
@@ -230,22 +238,64 @@ public class DefaultNetworkModel extends NetworkModel {
 		}
 		else
 			scheduleNow(this, DefaultNetworkModel.SEND_RESULT_FROM_ORCH_TO_DEV, transfer.getTask());
-
 	}
 
 	protected void executeTaskOrDownloadContainer(FileTransferProgress transfer) {
-		if (simulationParameters.ENABLE_REGISTRY && "CLOUD".equals(simulationParameters.registry_mode)
-				&& !((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()).getType().equals(TYPES.CLOUD)) {
-			// if the registry is enabled and the task is offloaded to the edge data centers or the mist nodes (edge devices),
-			// then download the container
-			scheduleNow(this, DefaultNetworkModel.DOWNLOAD_CONTAINER, transfer.getTask());
-
-		} else {// if the registry is disabled, execute directly the request, as it represents
+		//get the orchestration deploy
+		simulationParameters.TYPES type = null;
+		if ("".equals(simulationParameters.registry_mode)
+				|| ("CLOUD".equals(simulationParameters.registry_mode))) {
+			type = simulationParameters.TYPES.CLOUD;
+		} else if ("EDGE".equals(simulationParameters.registry_mode)) {
+			type = simulationParameters.TYPES.EDGE_DATACENTER;
+		} else if ("MIST".equals(simulationParameters.registry_mode)) {
+			type = simulationParameters.TYPES.EDGE_DEVICE;
+		} else {	//simulationParameters.registry_mode 可以继续添加自定义类型
+			SimLog.println("");
+			SimLog.println("SimulationManager- Unknnown orchestration deploy '" + simulationParameters.DEPLOY_ORCHESTRATOR
+					+ "', please check the simulation parameters file...");
+			// Cancel the simulation
+			Runtime.getRuntime().exit(0);
+		}
+		double WAN_PROPAGATION_DELAY_TASK = Getpropagationdelay(transfer.getTask().getOrchestrator()
+				,((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()));
+		if (simulationParameters.ENABLE_REGISTRY 
+				&& !((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()).getType().equals(type)){
+			// if the registry is enabled and the node where task offloaded(Type) is different with the registry_mode(Type), 
+			//then download the container
+			if (((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()) != transfer.getTask().getOrchestrator()
+					&& ((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()) != transfer.getTask().getEdgeDevice()) {
+				//find the closest registry_mode
+				double min = -1;
+				int selected = 0;
+				double distance;
+				for (int i = 0; i < datacentersList.size(); i++) {
+					if (datacentersList.get(i).getType() == type 
+							&& SimulationManager.issetlink((DataCenter) transfer.getTask().getVm().getHost().getDatacenter(),datacentersList.get(i))) {
+						distance = SimulationManager.getdistance((DataCenter) transfer.getTask().getVm().getHost().getDatacenter(),datacentersList.get(i));
+						if (min == -1 || min > distance) {
+							min = distance;
+							selected = i;
+						}
+					}
+				}
+				transfer.getTask().setRegistry(datacentersList.get(selected));
+				double WAN_PROPAGATION_DELAY_DOWNLOAD_CONTAINER = Getpropagationdelay((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()
+						,transfer.getTask().getRegistry());
+				double WAN_PROPAGATION_DELAY = WAN_PROPAGATION_DELAY_DOWNLOAD_CONTAINER + WAN_PROPAGATION_DELAY_TASK;
+				schedule(this, WAN_PROPAGATION_DELAY, DefaultNetworkModel.DOWNLOAD_CONTAINER, transfer.getTask());
+			}
+			else {
+				//scheduleNow(this, DefaultNetworkModel.DOWNLOAD_CONTAINER, transfer.getTask());
+				schedule(this, WAN_PROPAGATION_DELAY_TASK, DefaultNetworkModel.DOWNLOAD_CONTAINER, transfer.getTask());
+			}
+		} 
+		else {// if the registry is disabled, execute directly the request, as it represents
 				// the offloaded task in this case
-			if (((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()) != transfer.getTask().getOrchestrator()) {
-				double WAN_PROPAGATION_DELAY = Getpropagationdelay(transfer.getTask().getOrchestrator()
-						,((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()));
-				schedule(simulationManager, WAN_PROPAGATION_DELAY, SimulationManager.EXECUTE_TASK,
+			//task.getEdgeDevice().getId() != task.getVm().getHost().getDatacenter().getId()
+			if (((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()) != transfer.getTask().getOrchestrator()
+					&& ((DataCenter) transfer.getTask().getVm().getHost().getDatacenter()) != transfer.getTask().getEdgeDevice()) {
+				schedule(simulationManager, WAN_PROPAGATION_DELAY_TASK, SimulationManager.EXECUTE_TASK,
 						transfer.getTask());
 			}
 			else
@@ -270,8 +320,8 @@ public class DefaultNetworkModel extends NetworkModel {
 		schedule(this, 1, UPDATE_PROGRESS);
 	}
 	
-	public double Getpropagationdelay(DataCenter origin, DataCenter destination) {
-		double distance = Orchestrator.getdistance(origin,destination);
+	public double Getpropagationdelay(DataCenter origin, DataCenter destination) { //计算传播时间
+		double distance = SimulationManager.getdistance(origin,destination);
 		double propagationdelay = distance / simulationParameters.WAN_PROPAGATION_SPEED;
 		return propagationdelay;
 	}

@@ -113,8 +113,8 @@ public abstract class Orchestrator {
 	}
 
 	protected boolean sameLocation(DataCenter device1, DataCenter device2, int RANGE) {
-		double distance = getdistance(device1, device2);
-		if (distance < RANGE && issetlink(device1, device2)) {
+		double distance = SimulationManager.getdistance(device1, device2);
+		if (distance < RANGE && SimulationManager.issetlink(device1, device2)) {
 			return true;
 		}
 		else {
@@ -122,6 +122,7 @@ public abstract class Orchestrator {
 		}
 	}
 	
+	/*
 	public static boolean issetlink(DataCenter device1, DataCenter device2) {	//几何可见建立链路
 		double h1 = getHight(device1), h2 = getHight(device2), d = getdistance(device1, device2);
 		if(d == 0) {
@@ -148,6 +149,7 @@ public abstract class Orchestrator {
 		return Math.abs(Math.sqrt(Math.pow(device.getLocation().getXPos(), 2)
 				+ Math.pow(device.getLocation().getYPos(), 2)+ Math.pow(device.getLocation().getZPos(), 2)));
 	}
+	*/
 
 	protected boolean arrayContains(String[] Architecture, String value) {
 		for (String s : Architecture) {

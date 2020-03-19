@@ -24,17 +24,23 @@ public abstract class NetworkModel extends CloudSimEntity {
 	// the list where the current (and the previous)
 	// transferred file are stored
 	protected List<FileTransferProgress> transferProgressList;
+	protected List<? extends DataCenter> datacentersList;
 	protected SimulationManager simulationManager;
 	protected double bwUsage = 0;
 
 	public NetworkModel(SimulationManager simulationManager) {
 		super(simulationManager.getSimulation());
 		setSimulationManager(simulationManager);
+		this.datacentersList = this.getSimulationManager().getServersManager().getDatacenterList();
 		transferProgressList = new ArrayList<>();
 	}
 
 	private void setSimulationManager(SimulationManager simulationManager) {
 		this.simulationManager = simulationManager;
+	}
+	
+	public SimulationManager getSimulationManager() {
+		return simulationManager;
 	}
 
 	public List<FileTransferProgress> getTransferProgressList() {

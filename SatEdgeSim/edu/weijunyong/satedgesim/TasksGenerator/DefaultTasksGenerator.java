@@ -8,7 +8,6 @@ import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters.TYPES;
 import edu.weijunyong.satedgesim.SimulationManager.SimulationManager;
-import edu.weijunyong.satedgesim.TasksOrchestration.Orchestrator;
 
 public class DefaultTasksGenerator extends TasksGenerator {
 	public DefaultTasksGenerator(SimulationManager simulationManager) {
@@ -65,19 +64,6 @@ public class DefaultTasksGenerator extends TasksGenerator {
 		long containerSize = (int) simulationParameters.APPLICATIONS_TABLE[app][5]; // the size of the container 
 		Task[] task = new Task[simulationParameters.TASKS_PER_EDGE_DEVICE_PER_MINUTES];
 		int id;
-		double min = -1;
-		int selected = datacentersList.size()-1;
-		
-		for (int Registrydev = 0; Registrydev < datacentersList.size(); Registrydev++) {
-			if (datacentersList.get(Registrydev).getType() == TYPES.CLOUD  
-					&&  Orchestrator.issetlink(datacentersList.get(Registrydev),datacentersList.get(dev))) {
-				double dis = Orchestrator.getdistance(datacentersList.get(Registrydev),datacentersList.get(dev));
-				if (min == -1 || min > dis) {
-					min = dis;
-					selected = Registrydev;
-				}
-			}
-		}
 		
 		// generate tasks for every edge device
 		for (int i = 0; i < simulationParameters.TASKS_PER_EDGE_DEVICE_PER_MINUTES; i++) {
@@ -89,7 +75,7 @@ public class DefaultTasksGenerator extends TasksGenerator {
 			task[i].setContainerSize(containerSize);
 			task[i].setMaxLatency(maxLatency);
 			task[i].setEdgeDevice(datacentersList.get(dev)); // the device that generate this task (the origin)
-			task[i].setRegistry(datacentersList.get(selected)); //set the closed cloud as registry
+			//task[i].setRegistry(datacentersList.get(selected)); //set the closed cloud as registry
 			taskList.add(task[i]);
 			getSimulationManager().getSimulationLogger()
 					.deepLog("BasicTasksGenerator, Task " + id + " with execution time " + time + " (s) generated.");
