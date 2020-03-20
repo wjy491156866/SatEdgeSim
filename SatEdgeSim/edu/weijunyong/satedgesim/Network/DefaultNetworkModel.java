@@ -59,12 +59,16 @@ public class DefaultNetworkModel extends NetworkModel {
 	}
 
 	public void sendResultFromOrchToDev(Task task) {
-		transferProgressList.add(
-				new FileTransferProgress(task, task.getOutputSize() * 8, FileTransferProgress.Type.RESULTS_TO_DEV));
+		if (task.getOrchestrator() != task.getEdgeDevice())
+			transferProgressList.add(
+					new FileTransferProgress(task, task.getOutputSize() * 8, FileTransferProgress.Type.RESULTS_TO_DEV));
+		else
+			scheduleNow(simulationManager, SimulationManager.RESULT_RETURN_FINISHED, task);
 	}
 
 	public void sendResultFromDevToOrch(Task task) {
-		if (task.getOrchestrator() != task.getEdgeDevice())
+		//if (task.getOrchestrator() != task.getEdgeDevice())
+		if (task.getOrchestrator() != (DataCenter)task.getVm().getHost().getDatacenter())
 			transferProgressList.add(new FileTransferProgress(task, task.getOutputSize() * 8,
 					FileTransferProgress.Type.RESULTS_TO_ORCH));
 		else
@@ -225,8 +229,6 @@ public class DefaultNetworkModel extends NetworkModel {
 		else
 			scheduleNow(simulationManager, SimulationManager.RESULT_RETURN_FINISHED, transfer.getTask());
 	}
-		//scheduleNow(simulationManager, SimulationManager.RESULT_RETURN_FINISHED, transfer.getTask());
-	//}
 
 	protected void returnResultToDevice(FileTransferProgress transfer) {
 		// if the results are returned from different location, consider the wan propagation delay
