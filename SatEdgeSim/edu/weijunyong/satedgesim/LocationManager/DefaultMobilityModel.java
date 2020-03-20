@@ -16,18 +16,18 @@ public class DefaultMobilityModel extends Mobility {
 
 	public Location getNextLocation(int ID, double Simulationtime, String type) {
 		int time = (int)Simulationtime; //double
-		String FID = Integer.toString(ID);
+		//String FID = Integer.toString(ID);
 		String fileName = null;
 	
 		if (type == "cloud") {
-			fileName = MainApplication.getLocationFolder() + "cloud/cloud" + FID + ".csv";
+			fileName = MainApplication.getLocationFolder() + "cloud/cloud Fixed Position.csv";
 		} else if (type == "edge") {
-			fileName = MainApplication.getLocationFolder() + "edge_datacenter/edge" + FID + ".csv";
+			fileName = MainApplication.getLocationFolder() + "edge_datacenter/edge Fixed Position.csv";
 		} else {
-			fileName = MainApplication.getLocationFolder() + "edge_devices/mist" + FID + ".csv";
+			fileName = MainApplication.getLocationFolder() + "edge_devices/mist Fixed Position.csv";
 		}
 		
-    	double[] locationPos= ServersManager.SetDefaultlocation(fileName,time);
+    	double[] locationPos= ServersManager.SetDefaultlocation(fileName,ID,time);
     	Double x_position = locationPos[0];
     	Double y_position = locationPos[1];
     	Double z_position = locationPos[2];

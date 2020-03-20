@@ -212,10 +212,10 @@ public class ServersManager {
 				hostList);
 		//初始化位置坐标
 		datacenter.setDeviceID(ID);
-		String FID = Integer.toString(ID);
+		//String FID = Integer.toString(ID);
 		if (type == simulationParameters.TYPES.EDGE_DATACENTER) {
-			String fileName = MainApplication.getLocationFolder() + "edge_datacenter/edge" + FID + ".csv";
-	    	double[] locationPos= SetDefaultlocation(fileName,0);
+			String fileName = MainApplication.getLocationFolder() + "edge_datacenter/edge Fixed Position.csv";
+	    	double[] locationPos= SetDefaultlocation(fileName,ID,0);
 	    	x_position = locationPos[0];
 	    	y_position = locationPos[1];
 	    	z_position = locationPos[2];		
@@ -227,8 +227,8 @@ public class ServersManager {
 					Boolean.parseBoolean(datacenterElement.getElementsByTagName("battery").item(0).getTextContent()));
 			datacenter.setBatteryCapacity(Double
 					.parseDouble(datacenterElement.getElementsByTagName("batteryCapacity").item(0).getTextContent()));
-			String fileName = MainApplication.getLocationFolder() + "edge_devices/mist" + FID + ".csv";
-	    	double[] locationPos= SetDefaultlocation(fileName,0);
+			String fileName = MainApplication.getLocationFolder() + "edge_devices/mist Fixed Position.csv";
+	    	double[] locationPos= SetDefaultlocation(fileName,ID,0);
 	    	x_position = locationPos[0];
 	    	y_position = locationPos[1];
 	    	z_position = locationPos[2];
@@ -236,8 +236,8 @@ public class ServersManager {
 			getSimulationManager().getSimulationLogger().deepLog("ServersManager- Edge device:" + datacentersList.size()
 					+ "    location: ( " + datacenterLocation.getXPos() + "," + datacenterLocation.getYPos() + "," + datacenterLocation.getZPos()+ " )");
 		}else if (type == simulationParameters.TYPES.CLOUD) {
-			String fileName = MainApplication.getLocationFolder() + "cloud/cloud" + FID + ".csv";
-	    	double[] locationPos= SetDefaultlocation(fileName,0);
+			String fileName = MainApplication.getLocationFolder() + "cloud/cloud Fixed Position.csv";
+	    	double[] locationPos= SetDefaultlocation(fileName,ID,0);
 	    	x_position = locationPos[0];
 	    	y_position = locationPos[1];
 	    	z_position = locationPos[2];
@@ -339,25 +339,32 @@ public class ServersManager {
 		return hostList;
 	}
 	
-	public static double[] SetDefaultlocation(String fileName, int time){
+	public static double[] SetDefaultlocation(String fileName, int id, int time){
 		if (simulationParameters.LOCATIONTIMENUM < time) {
 			System.out.println("This time (" +time +") is Overflow ");
 			time = simulationParameters.LOCATIONTIMENUM;
 		}
+		int count_id=0;
 		String i1 = "";
         String i2 = "";
         String i3 = "";
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            reader.readLine();//第一行信息，为标题信息，不用,如果需要，注释掉
             String line = null;
             while((line = reader.readLine()) != null){
                 String item[] = line.split(",");//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-                if ((int)Double.parseDouble(item[0]) == time){
-                    i1 = item[1];
-                    i2 = item[2];
-                    i3 = item[3];
-                    break;
+                if (item[0].equals("\"Time (EpSec)\"")){ // 
+                	count_id++;
+                }
+                if (count_id == id) {
+                	if(!(item[0].equals("\"Time (EpSec)\"")) && !(item[0].equals(""))) {
+                		if((int)Double.parseDouble(item[0])== time) {
+                			i1 = item[1];
+                			i2 = item[2];
+                			i3 = item[3];
+                			break;
+                		}
+                	}
                 }
             }
             reader.close();
@@ -369,7 +376,7 @@ public class ServersManager {
         double zPos = Double.parseDouble(i3)*1000;
         double Geohigh = Math.abs(Math.sqrt(Math.pow(xPos, 2)+ Math.pow(yPos, 2)+ Math.pow(zPos, 2)));
         if(simulationParameters.EARTH_RADIUS > Geohigh) {
-            System.out.println(fileName + " Incorrect data. Time is: " +time);
+            System.out.println(fileName +"Id:"+id+ " Incorrect data. Time is: " +time);
             xPos = xPos*10;
             yPos = yPos*10;
             zPos = zPos*10;
