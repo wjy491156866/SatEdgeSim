@@ -6,6 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,13 +24,50 @@ import edu.weijunyong.satedgesim.SimulationManager.SimLog;
 public class FilesParser {
 
 	// Scan files
-	public boolean checkFiles(String simProp, String edgeDevicesFile, String edgeDataCentersFile, String appFile, String cloudFile, String locationFolder) {
+	public boolean checkFiles(String simProp, String edgeDevicesFile, String edgeDataCentersFile, String appFile, String cloudFile
+			, String cloudlocationFile,String edgeDataCenterslocationFile,String edgeDeviceslocationFile) {
 		simulationParameters.EDGE_DEVICES_FILE = edgeDevicesFile;
 		simulationParameters.EDGE_DATACENTERS_FILE = edgeDataCentersFile;
 		simulationParameters.CLOUD_DATACENTERS_FILE = cloudFile;
-		simulationParameters.LocationFolder = locationFolder;
-		return (checkSimulationProperties(simProp) && checkXmlFiles(edgeDevicesFile, TYPES.EDGE_DEVICE)
+		simulationParameters.CloudlocationFile = cloudlocationFile;
+		simulationParameters.EdgeDataCenterslocationFile = edgeDataCenterslocationFile;
+		simulationParameters.EdgeDeviceslocationFile = edgeDeviceslocationFile;
+		
+		
+		return (checkcSVFiles(cloudlocationFile) && checkcSVFiles(edgeDataCenterslocationFile) && checkcSVFiles(edgeDeviceslocationFile) 
+				&& checkSimulationProperties(simProp) && checkXmlFiles(edgeDevicesFile, TYPES.EDGE_DEVICE)
 				&& checkXmlFiles(edgeDataCentersFile, TYPES.EDGE_DATACENTER) && checkXmlFiles(cloudFile, TYPES.CLOUD) && checkAppFile(appFile));
+	}
+	
+	private boolean checkcSVFiles(String csvFile) {
+		SimLog.println("FilesParser- Checking file: " + csvFile);
+		if (csvFile == simulationParameters.CloudlocationFile) {
+			simulationParameters.Cloudlocationinfo = Getlocationinfo(csvFile);
+			return checklocationinfo(simulationParameters.Cloudlocationinfo,csvFile);
+		}
+		else if (csvFile == simulationParameters.EdgeDataCenterslocationFile) {
+			simulationParameters.EdgeDataCenterslocationinfo = Getlocationinfo(csvFile);
+			return checklocationinfo(simulationParameters.EdgeDataCenterslocationinfo,csvFile);
+		} else if (csvFile == simulationParameters.EdgeDeviceslocationFile){
+			simulationParameters.EdgeDeviceslocationinfo = Getlocationinfo(csvFile);
+			return checklocationinfo(simulationParameters.EdgeDeviceslocationinfo,csvFile);
+		}
+		else {
+			SimLog.println(
+					"FilelParser, Error, check the 'csvFile' file name.");
+			return false;
+		}
+	}
+	
+	private boolean checklocationinfo(List<Map<String,List<String>>> locationinfo, String csvFile) {
+		if ((locationinfo.size() ==0) || (locationinfo.get(1).isEmpty()) || (locationinfo.get(1).get("1").size() == 0)) {
+			SimLog.println("FilesParser- Failed to load LocationFolder file!"+csvFile);
+			return false;
+		}
+		else {
+			SimLog.println("FilesParser- Location file successfully Loaded!"+csvFile);
+			return true;
+		}
 	}
 
 	private boolean checkSimulationProperties(String simProp) {
@@ -80,13 +121,29 @@ public class FilesParser {
 					.parseInt(prop.getProperty("edge_device_counter_time").trim());
 			//simulationParameters.MIN_NUM_OF_EDGE_DEVICES = Integer
 			//		.parseInt(prop.getProperty("min_number_of_edge_devices").trim());
+			//cloudlocationFile,edgeDataCenterslocationFile,edgeDeviceslocationFile
+			int cloudlocationtimenum = simulationParameters.Cloudlocationinfo.get(1).get("1").size()-2;
+			int edgeDataCenterslocationtimenum = simulationParameters.EdgeDataCenterslocationinfo.get(1).get("1").size()-2;
+			int edgeDeviceslocationtimenum = simulationParameters.EdgeDeviceslocationinfo.get(1).get("1").size()-2;
+			if((cloudlocationtimenum == edgeDataCenterslocationtimenum) && (edgeDataCenterslocationtimenum == edgeDeviceslocationtimenum)) {
+				simulationParameters.LOCATIONTIMENUM = edgeDeviceslocationtimenum;	//time_num
+			} else {
+				SimLog.println("FilelParser, Error,  the csv time num is not the same, check the '.csv' file.");
+				System.exit(0);
+			}
+			if(simulationParameters.SIMULATION_TIME > simulationParameters.LOCATIONTIMENUM) {
+				SimLog.println(
+						"FilelParser, Error,  the location time is lower than the simulation time, check the 'simulation.properties' file."
+						+ "The simulation time is bigger than the number(minutes): "+ simulationParameters.LOCATIONTIMENUM/60);
+				System.exit(0);
+			}
+			simulationParameters.MAX_NUM_OF_EDGE_DEVICES = simulationParameters.EdgeDeviceslocationinfo.size(); //node_num
 			
+			//String fileNamemist = simulationParameters.LocationFolder + "edge_devices/mist Fixed Position.csv";
+			//int[] locationinfo = Getlocationinfo(fileNamemist); //0为time_num，1为node_num
 			
-			String fileNamemist = simulationParameters.LocationFolder + "edge_devices/mist Fixed Position.csv";
-			int[] locationinfo = Getlocationinfo(fileNamemist); //0为time_num，1为node_num
-			
-			simulationParameters.LOCATIONTIMENUM = locationinfo[0]; //time_num
-			simulationParameters.MAX_NUM_OF_EDGE_DEVICES = locationinfo[1]; //node_num
+			//simulationParameters.LOCATIONTIMENUM = locationinfo[0]; //time_num
+			//simulationParameters.MAX_NUM_OF_EDGE_DEVICES = locationinfo[1]; //node_num
 			//simulationParameters.MAX_NUM_OF_EDGE_DEVICES = Integer
 			//		.parseInt(prop.getProperty("max_number_of_edge_devices").trim());
 			simulationParameters.MIN_NUM_OF_EDGE_DEVICES = simulationParameters.MAX_NUM_OF_EDGE_DEVICES
@@ -230,31 +287,29 @@ public class FilesParser {
 		}
 		
 		if (type == TYPES.EDGE_DATACENTER) {
-			String edclocationname = simulationParameters.LocationFolder + "edge_datacenter/edge Fixed Position.csv";
-			int[] edclocationinfo = Getlocationinfo(edclocationname); //0为time_num，1为node_num
-			System.out.println("The time: "+ edclocationinfo[0]+". The node num: "+edclocationinfo[1]);
-			if(simulationParameters.NUM_OF_EDGE_DATACENTERS == edclocationinfo[1] 
-					&& simulationParameters.LOCATIONTIMENUM == edclocationinfo[0]) {
-				SimLog.println("FilesParser- Fog devices LocationFolder file successfully Loaded!");
+			//String edclocationname = simulationParameters.LocationFolder + "edge_datacenter/edge Fixed Position.csv";
+			//int[] edclocationinfo = Getlocationinfo(edclocationname); //0为time_num，1为node_num
+			//System.out.println("The time: "+ edclocationinfo[0]+". The node num: "+edclocationinfo[1]);
+			if(simulationParameters.NUM_OF_EDGE_DATACENTERS == simulationParameters.EdgeDataCenterslocationinfo.size()) {
+				SimLog.println("FilesParser- EdgeDataCenters XML file successfully Loaded!");
 				return true;
 			}
 			else {
-				SimLog.println("FilesParser- Failed to load edge_datacenter devices LocationFolder file!");
+				SimLog.println("FilesParser- Failed to load edge_datacenter XML file! check the edge_datacenter.xml file!");
 				return false;
 			}
 				
 		}
 		else if (type == TYPES.CLOUD) {
-			String cloudlocationname = simulationParameters.LocationFolder + "cloud/cloud Fixed Position.csv";
-			int[] cloudlocationinfo = Getlocationinfo(cloudlocationname); //0为time_num，1为node_num
-			System.out.println("The time: "+ cloudlocationinfo[0]+". The node num: "+cloudlocationinfo[1]);
-			if(simulationParameters.NUM_OF_CLOUD_DATACENTERS == cloudlocationinfo[1] 
-					&& simulationParameters.LOCATIONTIMENUM == cloudlocationinfo[0]) {
-				SimLog.println("FilesParser- cloud devices LocationFolder file successfully Loaded!");
+			//String cloudlocationname = simulationParameters.LocationFolder + "cloud/cloud Fixed Position.csv";
+			//int[] cloudlocationinfo = Getlocationinfo(cloudlocationname); //0为time_num，1为node_num
+			//System.out.println("The time: "+ cloudlocationinfo[0]+". The node num: "+cloudlocationinfo[1]);
+			if(simulationParameters.NUM_OF_CLOUD_DATACENTERS == simulationParameters.Cloudlocationinfo.size()) {
+				SimLog.println("FilesParser- cloud  XML file successfully Loaded!");
 				return true;
 			}
 			else {
-				SimLog.println("FilesParser- Failed to load cloud devices LocationFolder file!");
+				SimLog.println("FilesParser- Failed to load cloud XML file! check the cloud.xml file!");
 				return false;
 			}
 		}
@@ -343,6 +398,74 @@ public class FilesParser {
 		}
 	}
 	
+	//这种方法减少了CSV文件的数量，将csv数据读进内存，减少IO读取时间
+	public static List<Map<String,List<String>>> Getlocationinfo(String fileName){	  
+		  List<Map<String,List<String>>> data = new ArrayList<>();	//全部数据
+		  Map<String,List<String>> map = new HashMap<>();	//记录每一块数据
+		  List<String> list1 = new ArrayList<>();	//第一列
+		  List<String> list2 = new ArrayList<>();	//第二列
+		  List<String> list3 = new ArrayList<>();	//第三列
+		  List<String> list4 = new ArrayList<>();	//第四列
+		  try {
+			  BufferedReader reader = new BufferedReader(new FileReader(fileName));//换成你的文件名
+		      String line = null;
+		      while((line = reader.readLine()) != null){
+		    	  String item[] = line.split(",");//CSV格式文件为逗号分隔符文件，这里根据逗号切分
+		    	  if (!(item[0].equals(""))){
+		    		  list1.add(item[0]);
+		    		  list2.add(item[1]);
+		    		  list3.add(item[2]);
+		    		  list4.add(item[3]);
+		    	  }
+		    	  else {
+		        	  map.put("1",list1);
+		        	  map.put("2",list2);
+		        	  map.put("3",list3);
+		        	  map.put("4",list4);
+		        	  data.add(map);
+		        	  list1 = new ArrayList<>();
+		        	  list2 = new ArrayList<>();
+		        	  list3 = new ArrayList<>();
+		        	  list4 = new ArrayList<>();
+		        	  map = new HashMap<>();
+		          }
+		      }
+		      reader.close();
+		  } catch (Exception e) {
+			  e.printStackTrace();
+		  }
+		  return data;
+	}
+	
+	//这种方法减少了CSV文件的数量，但是单个CSV文件的大小太大，IO读取速度很慢。
+	/*
+	public static int[] Getlocationinfo(String fileName){
+		int count_time=0,count_node=0; 
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));//换成你的文件名
+            String line = null;
+            while((line = reader.readLine()) != null){
+                String item[] = line.split(",");//CSV格式文件为逗号分隔符文件，这里根据逗号切分
+                if (item[0].equals("\"Time (EpSec)\"")){ //统计节点数量
+                	count_node++;
+                }
+                if (count_node == 1) {
+                	if(!(item[0].equals("\"Time (EpSec)\"")) && !(item[0].equals(""))) { //统计时间情况
+                		count_time++;
+                	}
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int[] locationinfo= {count_time-1,count_node};
+        return locationinfo;
+	}
+	*/
+	
+	
+	//这种方法会导致CSV文件数量过多，生成数据工作量太大
 	/*
 	 * 方法名：getCsvFilesCount
 	 * 作用：统计.csv文件个数
@@ -387,28 +510,5 @@ public class FilesParser {
 	    return timenum;
 	}
 	*/
-	public static int[] Getlocationinfo(String fileName){
-		int count_time=0,count_node=0; 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));//换成你的文件名
-            String line = null;
-            while((line = reader.readLine()) != null){
-                String item[] = line.split(",");//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-                if (item[0].equals("\"Time (EpSec)\"")){ //统计节点数量
-                	count_node++;
-                }
-                if (count_node == 1) {
-                	if(!(item[0].equals("\"Time (EpSec)\"")) && !(item[0].equals(""))) { //统计时间情况
-                		count_time++;
-                	}
-                }
-            }
-            reader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        int[] locationinfo= {count_time-1,count_node};
-        return locationinfo;
-	}
-
+	
 }

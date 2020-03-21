@@ -1,13 +1,22 @@
 package edu.weijunyong.satedgesim.ScenarioManager;
- 
+
+import java.util.List;
+import java.util.Map;
 
 public class simulationParameters { 
 
 	public static String EDGE_DEVICES_FILE="";     // Edge devices xml file path 边缘设备配置文件路径
 	public static String EDGE_DATACENTERS_FILE=""; // Edge datacenters xml file path 边缘节点配置文件路径
 	public static String CLOUD_DATACENTERS_FILE="";// Cloud data centers xml file path 云数据中心配置文件路径
-	public static String LocationFolder="";        // 轨道文件 路径
+	public static String CloudlocationFile="";        // 云数据中心轨道文件 路径
+	public static String EdgeDataCenterslocationFile=""; //边缘节点轨道文件 路径
+	public static String EdgeDeviceslocationFile=""; //边缘设备轨道文件 路径
+	//csv数据
+	public static List<Map<String,List<String>>> Cloudlocationinfo;	
+	public static List<Map<String,List<String>>> EdgeDataCenterslocationinfo;
+	public static List<Map<String,List<String>>> EdgeDeviceslocationinfo;
 
+	
 	public static boolean PARALLEL = false;       // Enable parallelism 启用并行
 	public static double SIMULATION_TIME;         // Simulation time (in seconds) 仿真总时长
 	public static int PAUSE_LENGTH;               // Pause between scenarios (in seconds) 场景之间的暂停

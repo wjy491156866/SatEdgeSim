@@ -1,13 +1,12 @@
 package edu.weijunyong.satedgesim.DataCentersManager;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -32,7 +31,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.weijunyong.satedgesim.MainApplication;
 import edu.weijunyong.satedgesim.LocationManager.Location;
 import edu.weijunyong.satedgesim.LocationManager.Mobility;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
@@ -214,8 +212,8 @@ public class ServersManager {
 		datacenter.setDeviceID(ID);
 		//String FID = Integer.toString(ID);
 		if (type == simulationParameters.TYPES.EDGE_DATACENTER) {
-			String fileName = MainApplication.getLocationFolder() + "edge_datacenter/edge Fixed Position.csv";
-	    	double[] locationPos= SetDefaultlocation(fileName,ID,0);
+			//String fileName = MainApplication.getLocationFolder() + "edge_datacenter/edge Fixed Position.csv";
+	    	double[] locationPos= Setnodelocation(simulationParameters.EdgeDataCenterslocationinfo,ID,0);
 	    	x_position = locationPos[0];
 	    	y_position = locationPos[1];
 	    	z_position = locationPos[2];		
@@ -227,8 +225,8 @@ public class ServersManager {
 					Boolean.parseBoolean(datacenterElement.getElementsByTagName("battery").item(0).getTextContent()));
 			datacenter.setBatteryCapacity(Double
 					.parseDouble(datacenterElement.getElementsByTagName("batteryCapacity").item(0).getTextContent()));
-			String fileName = MainApplication.getLocationFolder() + "edge_devices/mist Fixed Position.csv";
-	    	double[] locationPos= SetDefaultlocation(fileName,ID,0);
+			//String fileName = MainApplication.getLocationFolder() + "edge_devices/mist Fixed Position.csv";
+	    	double[] locationPos= Setnodelocation(simulationParameters.EdgeDeviceslocationinfo,ID,0);
 	    	x_position = locationPos[0];
 	    	y_position = locationPos[1];
 	    	z_position = locationPos[2];
@@ -236,8 +234,8 @@ public class ServersManager {
 			getSimulationManager().getSimulationLogger().deepLog("ServersManager- Edge device:" + datacentersList.size()
 					+ "    location: ( " + datacenterLocation.getXPos() + "," + datacenterLocation.getYPos() + "," + datacenterLocation.getZPos()+ " )");
 		}else if (type == simulationParameters.TYPES.CLOUD) {
-			String fileName = MainApplication.getLocationFolder() + "cloud/cloud Fixed Position.csv";
-	    	double[] locationPos= SetDefaultlocation(fileName,ID,0);
+			//String fileName = MainApplication.getLocationFolder() + "cloud/cloud Fixed Position.csv";
+	    	double[] locationPos= Setnodelocation(simulationParameters.Cloudlocationinfo,ID,0);
 	    	x_position = locationPos[0];
 	    	y_position = locationPos[1];
 	    	z_position = locationPos[2];
@@ -338,7 +336,64 @@ public class ServersManager {
 
 		return hostList;
 	}
+
+	public List<Vm> getVmList() {
+		return vmList;
+
+	}
+
+	public List<DataCenter> getDatacenterList() {
+		return datacentersList;
+	}
+
+	public List<DataCenter> getOrchestratorsList() {
+		return orchestratorsList;
+	}
+
+	public SimulationManager getSimulationManager() {
+		return simulationManager;
+	}
+
+	public void setSimulationManager(SimulationManager simulationManager) {
+		this.simulationManager = simulationManager;
+	}
 	
+	public static double[] Setnodelocation(List<Map<String,List<String>>> locationinfo, int id, int timeindex){
+		if (simulationParameters.LOCATIONTIMENUM < timeindex) {
+			SimLog.println("ServersManager- This time (" +timeindex +") is Overflow ");
+			System.exit(0); 
+		}
+		String i1 = "",i2 = "",i3 = "";
+        double xpos =0,ypos =0,zpos =simulationParameters.EARTH_RADIUS;
+		if (locationinfo.size() !=0) {
+			if(!(locationinfo.get(1).isEmpty())) {
+				i1 = locationinfo.get(id-1).get("2").get(timeindex+1);
+	     		i2 = locationinfo.get(id-1).get("3").get(timeindex+1);
+	     		i3 = locationinfo.get(id-1).get("4").get(timeindex+1);
+			}
+	 		else {
+	 			SimLog.println("ServersManager- locationinfo Map is null, check the '.csv' file.");
+				System.exit(0);  
+	 		}
+	 		xpos = Double.parseDouble(i1)*1000;
+	 		ypos = Double.parseDouble(i2)*1000;
+	 		zpos = Double.parseDouble(i3)*1000;
+	 		//System.out.println("The location is: "+xpos + "," + ypos + "," + zpos);
+	 		double Geohigh = Math.abs(Math.sqrt(Math.pow(xpos, 2)+ Math.pow(ypos, 2)+ Math.pow(zpos, 2)));
+	 	    if(simulationParameters.EARTH_RADIUS > Geohigh) {
+	 	    	SimLog.println("ServersManager- locationinfo Id:"+ id + " Incorrect data. Time is: " +timeindex +", check the '.csv' file.");
+				System.exit(0); 
+	 	    }
+		}
+ 	    else {
+ 	    	SimLog.println("ServersManager- locationinfo List is null, check the '.csv' file.");
+			System.exit(0); 
+ 	    }
+		double[] locationPos= {xpos,ypos,zpos};
+		return locationPos;
+	}
+	
+	/*
 	public static double[] SetDefaultlocation(String fileName, int id, int time){
 		if (simulationParameters.LOCATIONTIMENUM < time) {
 			System.out.println("This time (" +time +") is Overflow ");
@@ -384,25 +439,5 @@ public class ServersManager {
         double[] locationPos= {xPos,yPos,zPos};
         return locationPos;
     }
-
-	public List<Vm> getVmList() {
-		return vmList;
-
-	}
-
-	public List<DataCenter> getDatacenterList() {
-		return datacentersList;
-	}
-
-	public List<DataCenter> getOrchestratorsList() {
-		return orchestratorsList;
-	}
-
-	public SimulationManager getSimulationManager() {
-		return simulationManager;
-	}
-
-	public void setSimulationManager(SimulationManager simulationManager) {
-		this.simulationManager = simulationManager;
-	}
+    */
 }
