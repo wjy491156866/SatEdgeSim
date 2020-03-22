@@ -83,7 +83,8 @@ public class SimLog {
 			resultsList.add("Orchestration architecture,Orchestration algorithm,Edge devices count,"
 					+ "Tasks ETE delay (s),Average ETE delay (s),"
 					+ "Tasks execution delay (s),Average execution delay (s),Tasks waiting time (s),"
-					+ "Average wainting time (s),Generated tasks,Tasks successfully executed,"
+					+ "Average wainting time (s),Generated tasks,Tasks successfully executed,Tasks success rate(%),"
+					+ "Tasks failed rate(delay)(%),Tasks failed rate(device dead)(%),Tasks failed rate(mobility)(%),"
 					+ "Task not executed (No resources available or long waiting time),Tasks failed (delay),Tasks failed (device dead),"
 					+ "Tasks failed (mobility),Tasks not generated due to the death of devices,Total tasks executed (Cloud),"
 					+ "Tasks successfully executed (Cloud),Total tasks executed (Edge),Tasks successfully executed (Edge),"
@@ -171,9 +172,13 @@ public class SimLog {
 				+ decimalFormat.format(totalExecutionTime / executedTasksCount) + ","
 				+ decimalFormat.format(totalWaitingTime) + ","
 				+ decimalFormat.format(totalWaitingTime / executedTasksCount) + "," + generatedTasksCount + ","
-				+ (tasksSent - tasksFailed) + "," + tasksFailed + "," + tasksFailedLatency + ","
-				+ tasksFailedBeacauseDeviceDead + "," + tasksFailedMobility + "," + notGeneratedBecDeviceDead + ","
-				+ tasksExecutedOnCloud + "," + (tasksExecutedOnCloud - tasksFailedCloud) + "," + tasksExecutedOnEdge
+				+ (tasksSent - tasksFailed) + "," + decimalFormat.format((double) (tasksSent - tasksFailed) * 100 / tasksSent) + ","
+				+ decimalFormat.format((double) tasksFailedLatency * 100 / tasksSent)+ "," 
+				+ decimalFormat.format((double) tasksFailedBeacauseDeviceDead * 100 / tasksSent)+ "," 
+				+ decimalFormat.format((double) tasksFailedMobility * 100 / tasksSent)+ "," 
+				+ tasksFailed + "," + tasksFailedLatency + ","+ tasksFailedBeacauseDeviceDead + ","
+				+ tasksFailedMobility + "," + notGeneratedBecDeviceDead + ","+ tasksExecutedOnCloud + ","
+				+ (tasksExecutedOnCloud - tasksFailedCloud) + "," + tasksExecutedOnEdge
 				+ "," + (tasksExecutedOnEdge - tasksFailedEdge) + "," + tasksExecutedOnMist + ","
 				+ (tasksExecutedOnMist - tasksFailedMist) + ",");
 	}

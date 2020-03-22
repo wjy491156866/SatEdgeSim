@@ -201,6 +201,12 @@ public class ChartsGenerator {
 		displayChart("Edge devices count", "Average execution delay (s)", "Time (s)", "/Delays");
 
 		displayChart("Edge devices count", "Tasks successfully executed", "Number of tasks", "/Tasks");
+		
+		displayChart("Edge devices count", "Tasks success rate(%)", "Success rate (%)", "/Tasks");
+		displayChart("Edge devices count", "Tasks failed rate(delay)(%)", "failed rate (%)", "/Tasks");
+		displayChart("Edge devices count", "Tasks failed rate(device dead)(%)", "failed rate (%)", "/Tasks");
+		displayChart("Edge devices count", "Tasks failed rate(mobility)(%)", "failed rate (%)", "/Tasks");
+		
 		displayChart("Edge devices count", "Tasks failed (delay)", "Number of tasks", "/Tasks");
 		displayChart("Edge devices count", "Tasks failed (device dead)", "Number of tasks", "/Tasks");
 		displayChart("Edge devices count", "Tasks failed (mobility)", "Number of tasks", "/Tasks");
