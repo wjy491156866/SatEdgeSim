@@ -161,10 +161,10 @@ public class FilesParser {
 			
 			//simulationParameters.SPEED = Double.parseDouble(prop.getProperty("speed").trim()); // meters per second m/s
 			
-			simulationParameters.BANDWIDTH_WLAN = 1000 * Integer.parseInt(prop.getProperty("wlan_bandwidth").trim()); // Mbits/s
+			simulationParameters.BANDWIDTH_WLAN = 1024 * Integer.parseInt(prop.getProperty("wlan_bandwidth").trim()); // Mbits/s
 																														// to
 																														// Kbits/s
-			simulationParameters.WAN_BANDWIDTH = 1000 * Integer.parseInt(prop.getProperty("wan_bandwidth").trim());// Mbits/s
+			simulationParameters.WAN_BANDWIDTH = 1024 * Integer.parseInt(prop.getProperty("wan_bandwidth").trim());// Mbits/s
 																													// to
 																													// Kbits/s
 			//simulationParameters.WAN_PROPAGATION_DELAY = Double

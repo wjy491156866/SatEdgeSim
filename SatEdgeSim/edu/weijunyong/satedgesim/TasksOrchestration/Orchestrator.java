@@ -121,35 +121,6 @@ public abstract class Orchestrator {
 			return false;
 		}
 	}
-	
-	/*
-	public static boolean issetlink(DataCenter device1, DataCenter device2) {	//几何可见建立链路
-		double h1 = getHight(device1), h2 = getHight(device2), d = getdistance(device1, device2);
-		if(d == 0) {
-			return true;
-		}else
-		{
-			double p = (h1 + h2 + d)/2;
-			double L = 2*(Math.sqrt(p*(p-h1)*(p-h1)*(p-h2)))/d;
-			if(L > simulationParameters.MIN_HEIGHT + simulationParameters.EARTH_RADIUS) {
-				return true;
-			}
-			else
-				return false;
-		}
-	}
-	
-	public static double getdistance(DataCenter device1, DataCenter device2) { //distance
-		return Math.abs(Math.sqrt(Math.pow((device1.getLocation().getXPos() - device2.getLocation().getXPos()), 2)
-						+ Math.pow((device1.getLocation().getYPos() - device2.getLocation().getYPos()), 2)
-						+ Math.pow((device1.getLocation().getZPos() - device2.getLocation().getZPos()), 2)));
-	}
-	
-	public static double getHight(DataCenter device) { //Geocentric height
-		return Math.abs(Math.sqrt(Math.pow(device.getLocation().getXPos(), 2)
-				+ Math.pow(device.getLocation().getYPos(), 2)+ Math.pow(device.getLocation().getZPos(), 2)));
-	}
-	*/
 
 	protected boolean arrayContains(String[] Architecture, String value) {
 		for (String s : Architecture) {

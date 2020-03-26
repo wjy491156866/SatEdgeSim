@@ -276,13 +276,14 @@ public class ServersManager {
 			long storage = Long.parseLong(hostElement.getElementsByTagName("storage").item(0).getTextContent());
 			long bandwidth;
 			long ram;
+			ram = Integer.parseInt(hostElement.getElementsByTagName("ram").item(0).getTextContent());
 
 			if (type == simulationParameters.TYPES.CLOUD) {
 				bandwidth = simulationParameters.WAN_BANDWIDTH / hostNodeList.getLength();
-				ram = Integer.parseInt(hostElement.getElementsByTagName("ram").item(0).getTextContent());
+				//ram = Integer.parseInt(hostElement.getElementsByTagName("ram").item(0).getTextContent());
 			} else {
 				bandwidth = simulationParameters.BANDWIDTH_WLAN / hostNodeList.getLength();
-				ram = Integer.parseInt(hostElement.getElementsByTagName("ram").item(0).getTextContent());
+				//ram = Integer.parseInt(hostElement.getElementsByTagName("ram").item(0).getTextContent());
 			}
 
 			// A Machine contains one or more PEs or CPUs/Cores. Therefore, should

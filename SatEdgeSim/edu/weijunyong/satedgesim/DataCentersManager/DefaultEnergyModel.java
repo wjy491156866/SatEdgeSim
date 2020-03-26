@@ -2,7 +2,6 @@ package edu.weijunyong.satedgesim.DataCentersManager;
 
 import edu.weijunyong.satedgesim.Network.FileTransferProgress;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
-import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters.TYPES;
 
 /*
  * The adopted energy model can be found in the paper
@@ -37,6 +36,11 @@ public class DefaultEnergyModel extends EnergyModel {
 			DataCenter device2, int flag) {
 
 		double distance;
+		distance = Math
+				.abs(Math.sqrt(Math.pow((device1.getLocation().getXPos() - device2.getLocation().getXPos()), 2)
+						+ Math.pow((device1.getLocation().getYPos() - device2.getLocation().getYPos()), 2)
+						+ Math.pow((device1.getLocation().getZPos() - device2.getLocation().getZPos()), 2)));
+		/*
 		if (device1.getType() == TYPES.CLOUD || device2.getType() == TYPES.CLOUD || device1.getType() == TYPES.EDGE_DATACENTER
 				|| device2.getType() == TYPES.EDGE_DATACENTER) {
 			distance = Math
@@ -49,6 +53,7 @@ public class DefaultEnergyModel extends EnergyModel {
 							+ Math.pow((device1.getLocation().getYPos() - device2.getLocation().getYPos()), 2)
 							+ Math.pow((device1.getLocation().getZPos() - device2.getLocation().getZPos()), 2)));
 		}
+		*/
 
 		int sizeInBits = (int) (file.getFileSize() * 1000);
 

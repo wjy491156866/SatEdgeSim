@@ -127,7 +127,7 @@ public abstract class NetworkModel extends CloudSimEntity {
 				bwUsage += fileTransferProgress.getRemainingFileSize();
 			}
 		}
-		bwUsage = (wanTasks > 0 ? bwUsage / wanTasks : 0) / 1000;
+		bwUsage = (wanTasks > 0 ? bwUsage / wanTasks : 0) / 1024; //Kb/s to Mb/s
 		return Math.min(bwUsage, simulationParameters.WAN_BANDWIDTH);
 	}
 

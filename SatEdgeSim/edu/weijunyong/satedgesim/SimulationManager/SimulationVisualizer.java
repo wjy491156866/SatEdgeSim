@@ -87,7 +87,7 @@ public class SimulationVisualizer {
 
 		networkUtilizationChart.getStyler().setDefaultSeriesRenderStyle(XYSeriesRenderStyle.Line);
 		updateStyle(networkUtilizationChart, new Double[] { 0.0, simulationManager.getSimulation().clock(), 0.0,
-				simulationParameters.WAN_BANDWIDTH / 1000.0 });
+				simulationParameters.WAN_BANDWIDTH / 1024.0 });
 	}
 	
 	/*
@@ -162,7 +162,7 @@ public class SimulationVisualizer {
 			time[i] = currentTime - ((wanUsage.size() - i) * simulationParameters.UPDATE_INTERVAL);
 
 		updateStyle(networkUtilizationChart,
-				new Double[] { currentTime - 200, currentTime, 0.0, simulationParameters.WAN_BANDWIDTH / 1000.0 });
+				new Double[] { currentTime - 200, currentTime, 0.0, simulationParameters.WAN_BANDWIDTH / 1024.0 });
 		//Double[]为坐标轴XY最小最大值
 		updateSeries(networkUtilizationChart, "WAN", time, toArray(wanUsage), SeriesMarkers.NONE, Color.BLACK); 
 	}
