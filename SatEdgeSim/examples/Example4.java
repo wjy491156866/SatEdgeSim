@@ -7,7 +7,7 @@ public class Example4 extends MainApplication {
 	 * This is a simple example showing how to launch simulation using a custom task
 	 * orchesrator. The CustomEdgeOrchestrator.java is located under the examples/
 	 * folder. As you can see, this class extends the Main class provided by
-	 * PureEdgeSim, which is required for this example to work.
+	 * SatEdgeSim, which is required for this example to work.
 	 */
 	public Example4(int fromIteration, int step_) {
 		super(fromIteration, step_);
@@ -16,7 +16,7 @@ public class Example4 extends MainApplication {
 	public static void main(String[] args) {
 		/*
 		 * To use your custom Edge orchestrator class, do this: The custom orchestrator
-		 * class can be found in the examples folder. by removing this line, pureEdgeSim
+		 * class can be found in the examples folder. by removing this line, SatEdgeSim
 		 * will use the default orchestrator class.
 		 */
 		setCustomEdgeOrchestrator(CustomEdgeOrchestrator.class);
@@ -30,7 +30,7 @@ public class Example4 extends MainApplication {
 		 * and the edge data centers (cloud and edge computing). You can use your own
 		 * algorithm by adding it to your custom class. After adding it to the
 		 * orchestrator class,to use it you need to add it to the simulation parameters
-		 * file (under the settings/ folder). To use the PureEdgeSim default edge
+		 * file (under the settings/ folder). To use the SatEdgeSim default edge
 		 * orchestrator class you can also uncomment this:
 		 */
 		// setCustomEdgeOrchestrator(DefaultEdgeOrchestrator.class);

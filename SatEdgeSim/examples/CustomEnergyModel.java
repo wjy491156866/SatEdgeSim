@@ -47,7 +47,7 @@ public class CustomEnergyModel extends EnergyModel {
 		this.wirelessEnergyConsumption+= filesize* 0.0000001;
 		
 		// of course this model is oversimplified
-		// for a more reaslitic model, please check the default PureEdgeSim Energy Model (DefaultEnergyModel) 
+		// for a more reaslitic model, please check the default SatEdgeSim Energy Model (DefaultEnergyModel) 
 	}
 
 }

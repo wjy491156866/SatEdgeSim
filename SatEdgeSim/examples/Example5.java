@@ -7,7 +7,7 @@ public class Example5 extends MainApplication {
 	 * This is a simple example showing how to launch simulation using a custom
 	 * network model. The CustomNetworkModel.java is located under the
 	 * examples/CustomNetworkModel/ folder. As you can see, this class extends the
-	 * MainApplication class provided by PureEdgeSim, which is required for this
+	 * MainApplication class provided by SatEdgeSim, which is required for this
 	 * example to work.
 	 * 
 	 * In this example, we will implement the cooperative caching algorithm
@@ -58,7 +58,7 @@ public class Example5 extends MainApplication {
 		setCustomNetworkModel(CustomNetworkModel.class);
 
 		/*
-		 * To use the PureEdgeSim default network model you can also uncomment this:
+		 * To use the SatEdgeSim default network model you can also uncomment this:
 		 */
 		// setCustomNetworkModel(DefaultNetworkModel.class);
 

@@ -26,7 +26,9 @@ public class DefaultEdgeOrchestrator extends Orchestrator {
 			return tradeOff(architecture, task);
 		} else if ("TRADI_POLLING".equals(algorithm)) {
 			return TradiPolling(architecture, task);
-		}else {
+		} else if ("WEIGHT_GREEDY".equals(algorithm)) {
+			return weightGreedy(architecture, task);
+		} else {
 			SimLog.println("");
 			SimLog.println("Default Orchestrator- Unknnown orchestration algorithm '" + algorithm
 					+ "', please check the simulation parameters file...");
@@ -38,7 +40,66 @@ public class DefaultEdgeOrchestrator extends Orchestrator {
 	
 	//orchestrationHistory.size() = vmList.size()
 	//
+	
+	//Comprehensive weighted greedy algorithm
+	//评价指标类型一致化，无量纲化，动态加权，综合评价
+	private int weightGreedy(String[] architecture, Task task) {
+		List<Double> disdelay = new ArrayList<>();	//第一列
+		List<Double> exedelay = new ArrayList<>();	//第二列
+		List<Integer> vmnum = new ArrayList<>();	//第三列
+		List<Double> energylim = new ArrayList<>();	//第四列
+	
+		for (int i = 0; i < orchestrationHistory.size(); i++) {
+			//传播延时
+			double disdelay_tem = SimulationManager.getdistance(((DataCenter) vmList.get(i).getHost().getDatacenter())
+					, task.getEdgeDevice())/simulationParameters.WAN_PROPAGATION_SPEED;
+			disdelay.add(disdelay_tem);
+			//处理延时
+			double exedelay_tem = task.getLength()/vmList.get(i).getMips();
+			exedelay.add(exedelay_tem);
+			//VM运行的任务数
+			vmnum.add(orchestrationHistory.get(i).size());
+			//vm的能耗
+			double energyuse =10*(Math.log10(((DataCenter) vmList.get(i).getHost().getDatacenter()).getEnergyModel().getTotalEnergyConsumption()));
+			energylim.add(energyuse);	
+		}
+		
+		int vm = -1;
+		double min = -1;
+		double new_min;// vm with minimum assigned tasks;
 
+		// get best vm for this task
+		for (int i = 0; i < orchestrationHistory.size(); i++) {
+			if (offloadingIsPossible(task, vmList.get(i), architecture)) {
+				double latency = 1;
+				double energy = 1;
+				if (((DataCenter) vmList.get(i).getHost().getDatacenter())
+						.getType() == simulationParameters.TYPES.CLOUD) {
+					latency = 1.6;
+					energy = 1.1;
+				} else if (((DataCenter) vmList.get(i).getHost().getDatacenter())
+						.getType() == simulationParameters.TYPES.EDGE_DEVICE) {
+					energy = 1.4;
+				}
+				new_min = (orchestrationHistory.get(i).size() + 1) * latency * energy * task.getLength() / vmList.get(i).getMips();
+				if (min == -1) { // if it is the first iteration
+					min = new_min;
+					// if this is the first time, set the first vm as the
+					vm = i; // best one
+				} else if (min > new_min) { // if this vm has more cpu mips and less waiting tasks
+					// idle vm, no tasks are waiting
+					min = new_min;
+					vm = i;
+				}
+			}
+		}
+		// assign the tasks to the found vm
+		return vm;
+	}
+	
+
+	
+	
 	private int tradeOff(String[] architecture, Task task) {
 		int vm = -1;
 		double min = -1;

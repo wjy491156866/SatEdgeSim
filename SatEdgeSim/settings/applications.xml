@@ -18,7 +18,7 @@
 		<container_size>13000</container_size>
 		<request_size>10000</request_size>
 		<results_size>10000</results_size>
-		<task_length>300000</task_length>
+		<task_length>200000</task_length>
 		<required_core>1</required_core>
 		<poisson_interarrival>30</poisson_interarrival>
 	</application>
