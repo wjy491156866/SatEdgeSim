@@ -156,8 +156,25 @@ public class ChartsGenerator {
 	}
 
 	private void generateEnergyCharts() {
+		displayChart("Edge devices count", "Energy consumption (dBW)", "Consumed energy (dBW)", "/Energy");
+		displayChart("Edge devices count", "Average energy consumption (dBW/Data center)", "Consumed energy (dBW)",
+				"/Energy");
+		displayChart("Edge devices count", "Average energy consumption (dBW/Task)", "Consumed energy (dBW)",
+				"/Energy");
+		displayChart("Edge devices count", "Cloud energy consumption (dBW)", "Consumed energy (dBW)", "/Energy");
+		displayChart("Edge devices count", "Average Cloud energy consumption (dBW/Data center)", "Consumed energy (dBW)",
+				"/Energy");
+		displayChart("Edge devices count", "Edge energy consumption (dBW)", "Consumed energy (dBW)", "/Energy");
+		displayChart("Edge devices count", "Average Edge energy consumption (dBW/Data center)", "Consumed energy (dBW)",
+				"/Energy");
+		displayChart("Edge devices count", "Mist energy consumption (dBW)", "Consumed energy (dBW)", "/Energy");
+		displayChart("Edge devices count", "Average Mist energy consumption (dBW/Device)", "Consumed energy (dBW)",
+				"/Energy");
+		
 		displayChart("Edge devices count", "Energy consumption (W)", "Consumed energy (W)", "/Energy");
 		displayChart("Edge devices count", "Average energy consumption (W/Data center)", "Consumed energy (W)",
+				"/Energy");
+		displayChart("Edge devices count", "Average energy consumption (W/Task)", "Consumed energy (W)",
 				"/Energy");
 		displayChart("Edge devices count", "Cloud energy consumption (W)", "Consumed energy (W)", "/Energy");
 		displayChart("Edge devices count", "Average Cloud energy consumption (W/Data center)", "Consumed energy (W)",

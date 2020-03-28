@@ -1,6 +1,7 @@
 package edu.weijunyong.satedgesim.TasksOrchestration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.cloudbus.cloudsim.vms.Vm;
@@ -39,16 +40,16 @@ public class DefaultEdgeOrchestrator extends Orchestrator {
 	}
 	
 	//orchestrationHistory.size() = vmList.size()
-	//
+	
 	
 	//Comprehensive weighted greedy algorithm
 	//评价指标类型一致化，无量纲化，动态加权，综合评价
 	private int weightGreedy(String[] architecture, Task task) {
+		//获取样本值
 		List<Double> disdelay = new ArrayList<>();	//第一列
 		List<Double> exedelay = new ArrayList<>();	//第二列
-		List<Integer> vmnum = new ArrayList<>();	//第三列
+		List<Double> vmnum = new ArrayList<>();	//第三列
 		List<Double> energylim = new ArrayList<>();	//第四列
-	
 		for (int i = 0; i < orchestrationHistory.size(); i++) {
 			//传播延时
 			double disdelay_tem = SimulationManager.getdistance(((DataCenter) vmList.get(i).getHost().getDatacenter())
@@ -58,37 +59,38 @@ public class DefaultEdgeOrchestrator extends Orchestrator {
 			double exedelay_tem = task.getLength()/vmList.get(i).getMips();
 			exedelay.add(exedelay_tem);
 			//VM运行的任务数
-			vmnum.add(orchestrationHistory.get(i).size());
+			vmnum.add((double)orchestrationHistory.get(i).size());
 			//vm的能耗
 			double energyuse =10*(Math.log10(((DataCenter) vmList.get(i).getHost().getDatacenter()).getEnergyModel().getTotalEnergyConsumption()));
 			energylim.add(energyuse);	
 		}
+		//标准化（归一化）
+		List<Double> disdelay_stand = new ArrayList<>();	//第一列
+		List<Double> exedelay_stand = new ArrayList<>();	//第二列
+		List<Double> vmnum_stand = new ArrayList<>();	//第三列
+		List<Double> energylim_stand = new ArrayList<>();	//第四列
+		disdelay_stand = standardization(disdelay);
+		exedelay_stand = standardization(exedelay);
+		vmnum_stand = standardization(vmnum);
+		energylim_stand = standardization(energylim);
 		
+		//加权综合评定
 		int vm = -1;
 		double min = -1;
-		double new_min;// vm with minimum assigned tasks;
-
+		double min_factor;// vm with minimum assigned tasks;
+		double a=0.3, b=0.3, c=0.25, d=0.15;
 		// get best vm for this task
 		for (int i = 0; i < orchestrationHistory.size(); i++) {
 			if (offloadingIsPossible(task, vmList.get(i), architecture)) {
-				double latency = 1;
-				double energy = 1;
-				if (((DataCenter) vmList.get(i).getHost().getDatacenter())
-						.getType() == simulationParameters.TYPES.CLOUD) {
-					latency = 1.6;
-					energy = 1.1;
-				} else if (((DataCenter) vmList.get(i).getHost().getDatacenter())
-						.getType() == simulationParameters.TYPES.EDGE_DEVICE) {
-					energy = 1.4;
-				}
-				new_min = (orchestrationHistory.get(i).size() + 1) * latency * energy * task.getLength() / vmList.get(i).getMips();
+				
+				min_factor = a*disdelay_stand.get(i) + b*exedelay_stand.get(i) + c*vmnum_stand.get(i) + d*energylim_stand.get(i);
 				if (min == -1) { // if it is the first iteration
-					min = new_min;
+					min = min_factor;
 					// if this is the first time, set the first vm as the
 					vm = i; // best one
-				} else if (min > new_min) { // if this vm has more cpu mips and less waiting tasks
+				} else if (min > min_factor) { // if this vm has more cpu mips and less waiting tasks
 					// idle vm, no tasks are waiting
-					min = new_min;
+					min = min_factor;
 					vm = i;
 				}
 			}
@@ -97,6 +99,16 @@ public class DefaultEdgeOrchestrator extends Orchestrator {
 		return vm;
 	}
 	
+	public List<Double> standardization (List<Double> Pre_standar){	//极值差法标准化
+		List<Double> standard = new ArrayList<>();
+		double premax = Collections.max(Pre_standar);
+		double premin = Collections.min(Pre_standar);
+		for(int k=0; k<Pre_standar.size(); k++) {
+			double temp =(Pre_standar.get(k)-premin)/(premax-premin);
+			standard.add(temp);
+		}
+		return standard;
+	}
 
 	
 	

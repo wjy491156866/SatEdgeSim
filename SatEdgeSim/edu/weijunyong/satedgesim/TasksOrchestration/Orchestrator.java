@@ -49,6 +49,8 @@ public abstract class Orchestrator {
 			edgeOnly(task);
 		} else if ("MIST_AND_CLOUD".equals(architecture)) {
 			mistAndCloud(task);
+		} else if ("MIST_AND_EDGE".equals(architecture)) {
+			mistAndEdge(task);
 		}
 	}
 
@@ -85,6 +87,11 @@ public abstract class Orchestrator {
 	// If the orchestration scenario is ALL send Tasks to any virtual machine (vm) or device
 	private void all(Task task) {
 		String[] Architecture = { "Cloud", "Edge", "Mist" };
+		sendTask(task, findVM(Architecture, task));
+	}
+	
+	private void mistAndEdge(Task task) {
+		String[] Architecture = { "Edge", "Mist" };
 		sendTask(task, findVM(Architecture, task));
 	}
 

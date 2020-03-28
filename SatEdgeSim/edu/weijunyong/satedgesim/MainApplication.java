@@ -223,12 +223,6 @@ public class MainApplication {
 	public static String getOutputFolder() {
 		return outputFolder;
 	}
-	
-	/*
-	public static String getLocationFolder() {
-		return locationFolder;
-	}
-	*/
 
 	protected static void setCustomEdgeDataCenters(Class<? extends DataCenter> edgedatacenter2) {
 		edgedatacenter = edgedatacenter2;
