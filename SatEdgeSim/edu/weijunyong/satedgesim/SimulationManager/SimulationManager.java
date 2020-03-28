@@ -43,6 +43,7 @@ public class SimulationManager extends CloudSimEntity {
 	private List<? extends DataCenter> orchestratorsList;
 	private double failedTasksCount = 0;
 	private int tasksCount = 0;
+	private int waittoendCount = 0;
 
 	public SimulationManager(SimLog simLog, CloudSim simulation, int simulationId, int iteration, Scenario scenario) {
 		super(simulation);
@@ -87,7 +88,7 @@ public class SimulationManager extends CloudSimEntity {
 		}
 
 		// Scheduling the end of the simulation
-		schedule(this, simulationParameters.SIMULATION_TIME, PRINT_LOG);
+		schedule(this, simulationParameters.SIMULATION_TIME+simulationParameters.INITIALIZATION_TIME, PRINT_LOG);
 
 		// Updating real time charts
 		if (simulationParameters.DISPLAY_REAL_TIME_CHARTS && !simulationParameters.PARALLEL)
@@ -162,7 +163,7 @@ public class SimulationManager extends CloudSimEntity {
 			// Print results when simulation is over
 			List<Task> finishedTasks = broker.getCloudletFinishedList();
 			// If some tasks have not been executed
-			if (simulationParameters.WAIT_FOR_TASKS && (tasksCount / simLog.getGeneratedTasks()) < 1) {
+			if (simulationParameters.WAIT_FOR_TASKS && (tasksCount / simLog.getGeneratedTasks()) < 0.99) {
 				// 1 = 100% , 0,9= 90%
 				// Some tasks may take hours to be executed that's why we don't wait until
 				// all of them get executed, but we only wait for 99% of tasks to be executed at
@@ -170,9 +171,13 @@ public class SimulationManager extends CloudSimEntity {
 				// especially when 1% doesn't affect the simulation results that much, change
 				// this value to lower ( 95% or 90%) in order to make simulation faster. however
 				// this may affect the results
-				schedule(this, 10, PRINT_LOG);
-				break;
+				waittoendCount++;
+				if(waittoendCount <= 3) {  //30swait
+					schedule(this, 10, PRINT_LOG);
+					break;
+				}
 			}
+			waittoendCount =0;
 
 			simLog.printSameLine(" 100% ]", "red");
 
