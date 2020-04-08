@@ -27,6 +27,7 @@ public class SimulationManager extends CloudSimEntity {
 	public static final int RESULT_RETURN_FINISHED = Base + 5;
 	public static final int SEND_TO_ORCH = Base + 6;
 	public static final int UPDATE_REAL_TIME_CHARTS = Base + 7;
+	public static int overflowtime=0;
 	private CustomBroker broker;
 	private List<Task> tasksList;
 	private Orchestrator edgeOrchestrator;
@@ -172,10 +173,11 @@ public class SimulationManager extends CloudSimEntity {
 				// this value to lower ( 95% or 90%) in order to make simulation faster. however
 				// this may affect the results
 				waittoendCount++;
-				if(waittoendCount <= 3) {  //30swait
+				if(waittoendCount <= 3) {  //30s wait
 					schedule(this, 10, PRINT_LOG);
 					break;
 				}
+				overflowtime++;
 			}
 			waittoendCount =0;
 

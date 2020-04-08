@@ -42,6 +42,9 @@ public class MainApplication {
 	protected static String cloudlocationFile = "SatEdgeSim/settings/locationflie/cloud/cloud Fixed Position.csv";
 	protected static String edgeDataCenterslocationFile = "SatEdgeSim/settings/locationflie/edge_datacenter/edge Fixed Position.csv";
 	protected static String edgeDeviceslocationFile = "SatEdgeSim/settings/locationflie/edge_devices/mist Fixed Position.csv";
+	//protected static String cloudlocationFile = "SatEdgeSim/settings/locationflie/cloud/cloud Fixed Position1.csv";
+	//protected static String edgeDataCenterslocationFile = "SatEdgeSim/settings/locationflie/edge_datacenter/edge Fixed Position1.csv";
+	//protected static String edgeDeviceslocationFile = "SatEdgeSim/settings/locationflie/edge_devices/mist Fixed Position1.csv";
 
 	// Parallel simulation Parameters
 	protected int fromIteration;

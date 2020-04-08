@@ -20,7 +20,6 @@ import org.cloudbus.cloudsim.vms.Vm;
 
 import edu.weijunyong.satedgesim.MainApplication;
 import edu.weijunyong.satedgesim.DataCentersManager.DataCenter;
-import edu.weijunyong.satedgesim.DataCentersManager.ServersManager;
 import edu.weijunyong.satedgesim.Network.FileTransferProgress;
 import edu.weijunyong.satedgesim.ScenarioManager.simulationParameters;
 import edu.weijunyong.satedgesim.TasksGenerator.Task;
@@ -120,54 +119,54 @@ public class SimLog {
 		print("");
 		print("------------------------------------------------------- OUTPUT -------------------------------------------------------");
 		print("");
-		print("SimLog- Tasks not sent because device died (low energy)                         :"
-				+ padLeftSpaces(decimalFormat.format(notGeneratedBecDeviceDead / generatedTasksCount), 20) + " % ("
+		print("SimLog- Tasks not sent because device died (low energy)                         : "
+				+ padLeftSpaces(decimalFormat.format(notGeneratedBecDeviceDead / generatedTasksCount), 15) + " % ("
 				+ notGeneratedBecDeviceDead + " tasks)");
-		print("SimLog- Tasks sent from edge devices                                            :"
+		print("SimLog- Tasks sent from edge devices                                            : "
 				+ padLeftSpaces("" + decimalFormat.format(((double) tasksSent * 100) / ((double) generatedTasksCount)),
-						20)
+						15)
 				+ " % (" + tasksSent + " among " + generatedTasksCount + " generated tasks)");
 
 		print("-------------------------------------All values below are based on the sent tasks-------------------------------------");
-		print("SimLog- Tasks ETE delay                                                   :"
-				+ padLeftSpaces(decimalFormat.format(totalEtedelayTime), 20) + " seconds");
-		print("SimLog- Average tasks ETE delay                                           :"
-				+ padLeftSpaces(decimalFormat.format(totalEtedelayTime / EtedelayTasksCount), 20) + " seconds");
+		print("SimLog- Tasks ETE delay                                                         :"
+				+ padLeftSpaces(decimalFormat.format(totalEtedelayTime), 15) + " seconds");
+		print("SimLog- Average tasks ETE delay                                                 :"
+				+ padLeftSpaces(decimalFormat.format(totalEtedelayTime / EtedelayTasksCount), 15) + " seconds");
 		print("SimLog- Tasks execution delay                                                   :"
-				+ padLeftSpaces(decimalFormat.format(totalExecutionTime), 20) + " seconds");
+				+ padLeftSpaces(decimalFormat.format(totalExecutionTime), 15) + " seconds");
 		print("SimLog- Average tasks execution delay                                           :"
-				+ padLeftSpaces(decimalFormat.format(totalExecutionTime / executedTasksCount), 20) + " seconds");
+				+ padLeftSpaces(decimalFormat.format(totalExecutionTime / executedTasksCount), 15) + " seconds");
 		print("SimLog- Tasks waiting time (from task submiting to the execution start)         :"
-				+ padLeftSpaces(decimalFormat.format(totalWaitingTime), 20) + " seconds");
+				+ padLeftSpaces(decimalFormat.format(totalWaitingTime), 15) + " seconds");
 		print("SimLog- Average tasks waiting time (from task submiting to the execution start) :"
-				+ padLeftSpaces(decimalFormat.format(totalWaitingTime / executedTasksCount), 20) + " seconds");
+				+ padLeftSpaces(decimalFormat.format(totalWaitingTime / executedTasksCount), 15) + " seconds");
 		print("SimLog- Tasks successfully executed                                             :"
-				+ padLeftSpaces("" + decimalFormat.format((double) (tasksSent - tasksFailed) * 100 / tasksSent), 20)
+				+ padLeftSpaces("" + decimalFormat.format((double) (tasksSent - tasksFailed) * 100 / tasksSent), 15)
 				+ " % (" + (tasksSent - tasksFailed) + " among " + tasksSent + " sent tasks)");
 
 		print("SimLog- Tasks failures");
 		print("                                       Not executed due to resources unavailable:"
-				+ padLeftSpaces(decimalFormat.format((double) tasksFailedRessourcesUnavailable * 100 / tasksSent), 20)
+				+ padLeftSpaces(decimalFormat.format((double) tasksFailedRessourcesUnavailable * 100 / tasksSent), 15)
 				+ " % (" + tasksFailedRessourcesUnavailable + " tasks)");
 		print("                              Successfully executed but failed due to high delay:"
-				+ padLeftSpaces(decimalFormat.format((double) tasksFailedLatency * 100 / tasksSent), 20) + " % ("
+				+ padLeftSpaces(decimalFormat.format((double) tasksFailedLatency * 100 / tasksSent), 15) + " % ("
 				+ tasksFailedLatency + " tasks from " + tasksSent + " successfully sent tasks)");
 		print("                 Tasks execution results not returned because the device is dead:"
-				+ padLeftSpaces(decimalFormat.format((double) tasksFailedBeacauseDeviceDead * 100 / tasksSent), 20)
+				+ padLeftSpaces(decimalFormat.format((double) tasksFailedBeacauseDeviceDead * 100 / tasksSent), 15)
 				+ " % (" + tasksFailedBeacauseDeviceDead + " tasks)");
 		print("                     Tasks execution results not returned due to device mobility:"
-				+ padLeftSpaces(decimalFormat.format((double) tasksFailedMobility * 100 / tasksSent), 20) + " % ("
+				+ padLeftSpaces(decimalFormat.format((double) tasksFailedMobility * 100 / tasksSent), 15) + " % ("
 				+ tasksFailedMobility + " tasks)");
 
-		print("SimLog- Tasks executed on each level                                            :" + " Cloud="
-				+ padLeftSpaces("" + tasksExecutedOnCloud, 13) + " tasks (where "
-				+ (tasksExecutedOnCloud - tasksFailedCloud) + " were successfully executed )");
-		print("                                                                                 " + " Edge="
+		print("SimLog- Tasks executed on each level                                :" + " Cloud="
+				+ padLeftSpaces("" + tasksExecutedOnCloud, 15) + " tasks (where "
+				+ (tasksExecutedOnCloud - tasksFailedCloud) + " were successfully executed)");
+		print("                                                                      " + " Edge="
 				+ padLeftSpaces("" + tasksExecutedOnEdge, 15) + " tasks (where " + (tasksExecutedOnEdge - tasksFailedEdge)
-				+ " were successfully executed )");
-		print("                                                                                 " + " Mist="
-				+ padLeftSpaces("" + tasksExecutedOnMist, 14) + " tasks (where "
-				+ (tasksExecutedOnMist - tasksFailedMist) + " were successfully executed )");
+				+ " were successfully executed)");
+		print("                                                                      " + " Mist="
+				+ padLeftSpaces("" + tasksExecutedOnMist, 15) + " tasks (where "
+				+ (tasksExecutedOnMist - tasksFailedMist) + " were successfully executed)");
 
 		resultsList.add(currentOrchArchitecture + "," + currentOrchAlgorithm + "," + currentEdgeDevicesCount + ","
 				+ decimalFormat.format(totalEtedelayTime) + ","
@@ -189,20 +188,20 @@ public class SimLog {
 
 	public void printNetworkRelatedResults() {
 		print("SimLog- Network usage                                                           :"
-				+ padLeftSpaces(decimalFormat.format(totalLanUsage), 20) + " seconds (The total traffic: "
-				+ decimalFormat.format(totalTraffic) + " (MBytes) )");
-		print("                                                                                 " + " Wan="
+				+ padLeftSpaces(decimalFormat.format(totalLanUsage), 15) + " seconds (The total traffic: "
+				+ decimalFormat.format(totalTraffic) + " (MBytes))");
+		print("                                                                       " + " Wan="
 				+ padLeftSpaces(decimalFormat.format(totalWanUsage), 15) + " seconds ("
 				+ decimalFormat.format(totalWanUsage * 100 / totalLanUsage)
 				+ " % of total usage, WAN used when downloading containers="
-				+ decimalFormat.format(containersWanUsage * 100 / totalWanUsage) + " % of WAN usage )");
-		print("                                                                                 " + " Lan="
+				+ decimalFormat.format(containersWanUsage * 100 / totalWanUsage) + " % of WAN usage)");
+		print("                                                                       " + " Lan="
 				+ padLeftSpaces(decimalFormat.format(totalLanUsage), 15) + " seconds ("
 				+ decimalFormat.format(totalLanUsage * 100 / totalLanUsage)
 				+ " % of total usage, LAN used when downloading containers="
-				+ decimalFormat.format(containersLanUsage * 100 / totalLanUsage) + " % of LAN usage )");
-		print("                                                            Average bandwidth per transfer="
-				+ padLeftSpaces(decimalFormat.format(totalBandwidth / transfersCount), 10) + " Mbps  ");
+				+ decimalFormat.format(containersLanUsage * 100 / totalLanUsage) + " % of LAN usage)");
+		print("                                                   Average bandwidth per transfer="
+				+ padLeftSpaces(decimalFormat.format(totalBandwidth / transfersCount), 15) + " Mbps  ");
 		// Add these values to the las item of the results list
 		resultsList.set(resultsList.size() - 1,
 				resultsList.get(resultsList.size() - 1) + totalLanUsage + "," + totalWanUsage + "," + totalLanUsage
@@ -283,52 +282,54 @@ public class SimLog {
 		double averageMistEnConsumption = mistEnConsumption / simulationManager.getScenario().getDevicesCount();
 
 		print("SimLog- Average vm CPU utilization                                              :"
-				+ padLeftSpaces(decimalFormat.format(averageCpuUtilization), 20) + " %");
-		print("SimLog- Average vm CPU utilization per level                                    : Cloud= "
-				+ padLeftSpaces(decimalFormat.format(averageCloudCpuUtilization), 12) + " %");
-		print("                                                                                  Edge= "
-				+ padLeftSpaces(decimalFormat.format(averageEdgeCpuUtilization), 14) + " %");
-		print("                                                                                  Mist= "
-				+ padLeftSpaces(decimalFormat.format(averageMistCpuUtilization), 13) + " %");
+				+ padLeftSpaces(decimalFormat.format(averageCpuUtilization), 15) + " %");
+		print("SimLog- Average vm CPU utilization per level                             : Cloud="
+				+ padLeftSpaces(decimalFormat.format(averageCloudCpuUtilization), 15) + " %");
+		print("                                                                            Edge="
+				+ padLeftSpaces(decimalFormat.format(averageEdgeCpuUtilization), 15) + " %");
+		print("                                                                            Mist="
+				+ padLeftSpaces(decimalFormat.format(averageMistCpuUtilization), 15) + " %");
 		print("SimLog- Energy consumption                                                      :"
 				+ padLeftSpaces(decimalFormat.format(energyConsumption), 20) + " W, "
-				+ padLeftSpaces(decimalFormat.format(10*Math.log10(energyConsumption)), 20) + " dBW (Average: "
+				+ padLeftSpaces(decimalFormat.format(10*Math.log10(energyConsumption)), 10) + " dBW");
+		print("                                                                                :(Average:"
 				+ decimalFormat.format(energyConsumption / datacentersList.size()) + " W/data center(or device), "
 				+ decimalFormat.format(10*Math.log10(energyConsumption / datacentersList.size())) + " dBW/data center(or device))");
-		print("                                                                                :"
-				+ padLeftSpaces("", 20) + "    (Average: "
+		print("                                                                                :(Average:"
 				+ decimalFormat.format(energyConsumption / (double) finishedTasks.size()) + " W/task, "
 				+ decimalFormat.format(10*Math.log10(energyConsumption / (double) finishedTasks.size())) + " dBW/task)");
-		print("SimLog- Energy Consumption per level                                            : Cloud="
-				+ padLeftSpaces(decimalFormat.format(cloudEnConsumption), 13) + " W, "
-				+ padLeftSpaces(decimalFormat.format(10*Math.log10(cloudEnConsumption)), 13) + " dBW (Average: "
+		print("SimLog- Energy Consumption per level                                     : Cloud="
+				+ padLeftSpaces(decimalFormat.format(cloudEnConsumption), 20) + " W, "
+				+ padLeftSpaces(decimalFormat.format(10*Math.log10(cloudEnConsumption)), 10) + " dBW");
+		print("                                                                                :(Average:"
 				+ decimalFormat.format(cloudEnConsumption / simulationParameters.NUM_OF_CLOUD_DATACENTERS) + " W/data center, "
 				+ decimalFormat.format(10*Math.log10(cloudEnConsumption / simulationParameters.NUM_OF_CLOUD_DATACENTERS)) 
 				+ " dBW/data center)");
-		print("                                                                                  Edge="
-				+ padLeftSpaces(decimalFormat.format(edgeEnConsumption), 15) + " W, "
-				+ padLeftSpaces(decimalFormat.format(10*Math.log10(edgeEnConsumption)), 15) + " dBW (Average: "
+		print("                                                                            Edge="
+				+ padLeftSpaces(decimalFormat.format(edgeEnConsumption), 20) + " W, "
+				+ padLeftSpaces(decimalFormat.format(10*Math.log10(edgeEnConsumption)), 10) + " dBW");
+		print("                                                                                :(Average:"
 				+ decimalFormat.format(edgeEnConsumption / simulationParameters.NUM_OF_EDGE_DATACENTERS) + " W/data center, "
 				+ decimalFormat.format(10*Math.log10(edgeEnConsumption / simulationParameters.NUM_OF_EDGE_DATACENTERS)) 
 				+ " dBW/data center)");
-		print("                                                                                  Mist="
-				+ padLeftSpaces(decimalFormat.format(mistEnConsumption), 14) + " W, "
-				+ padLeftSpaces(decimalFormat.format(10*Math.log10(mistEnConsumption)), 14) + " dBW (Average: "
+		print("                                                                            Mist="
+				+ padLeftSpaces(decimalFormat.format(mistEnConsumption), 20) + " W, "
+				+ padLeftSpaces(decimalFormat.format(10*Math.log10(mistEnConsumption)), 10) + " dBW");
+		print("                                                                                :(Average:"
 				+ decimalFormat.format(mistEnConsumption / currentEdgeDevicesCount) + " W/edge device, "
 				+ decimalFormat.format(10*Math.log10(mistEnConsumption / currentEdgeDevicesCount)) + " dBW/edge device)");
 		print("SimLog- Dead edge devices due to battery drain                                  :"
-				+ padLeftSpaces(decimalFormat.format(deadEdgeDevicesCount), 20) + " devices (Among "
+				+ padLeftSpaces(decimalFormat.format(deadEdgeDevicesCount), 15) + " devices (Among "
 				+ batteryPoweredDevicesCount + " devices with batteries ("
 				+ decimalFormat.format(((double) deadEdgeDevicesCount) * 100 / (double) batteryPoweredDevicesCount)
 				+ " %))");
 		print("SimLog- Average remaining power (devices with batteries that are still alive)   :"
-				+ padLeftSpaces(decimalFormat.format(averageRemainingPowerWh), 20) + " Wh (Average: "
+				+ padLeftSpaces(decimalFormat.format(averageRemainingPowerWh), 15) + " Wh (Average: "
 				+ decimalFormat.format(averageRemainingPower) + " %)");
-		print("ServersManager- the time index overflow times :"+ServersManager.overflowtime);
-		ServersManager.overflowtime = 0;
+		print("SimulationManager- the Scenario Simulation overflow times :"+SimulationManager.overflowtime);
 		if (firstDeviceDeathTime != -1)
-			print("SimLog- First device died at                                                    :"
-					+ padLeftSpaces("" + firstDeviceDeathTime, 20) + " seconds");
+			print("SimLog- First device died at                                                 :"
+					+ padLeftSpaces("" + firstDeviceDeathTime, 15) + " seconds");
 
 		// Add these values to the las item of the results list
 		resultsList.set(resultsList.size() - 1, resultsList.get(resultsList.size() - 1)

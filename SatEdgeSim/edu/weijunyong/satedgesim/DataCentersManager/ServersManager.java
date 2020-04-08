@@ -359,13 +359,10 @@ public class ServersManager {
 		this.simulationManager = simulationManager;
 	}
 	
-	public static int overflowtime = 0;
 	public static double[] Setnodelocation(List<Map<String,List<String>>> locationinfo, int id, int timeindex){
-	
 		if (simulationParameters.LOCATIONTIMENUM < timeindex) {
 			SimLog.println("ServersManager- This time (" +timeindex +") is Overflow ");
 			timeindex = timeindex % simulationParameters.LOCATIONTIMENUM;
-			overflowtime++;
 		}
 		String i1 = "",i2 = "",i3 = "";
         double xpos =0,ypos =0,zpos =simulationParameters.EARTH_RADIUS;
