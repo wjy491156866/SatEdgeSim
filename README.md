@@ -1,7 +1,7 @@
 # SatEdgeSim
 
 SatEdgeSim: A Toolkit for Modeling and Simulation of Performance Evaluation in Satellite Edge Computing Environments, 
-which uses [CloudSim Plus](http://cloudsimplus.org) as the underlying simulation framework.
+which uses [CloudSim Plus](http://cloudsimplus.org) and [PureEdgeSim](https://github.com/CharafeddineMechalikh/PureEdgeSim)as the underlying simulation framework.
 
 # SATELLITE EDGE COMPUTING BACKGROUND
 For edge computing hotspot issues, Table I shows the differences between satellite edge computing and ground edge computing scenarios. The existing simulators mainly simulate the ground edge computing environment, and the problems considered are also based on the ground network. In the configuration of the environment, the satellite edge computing simulator needs to provide a simulation environment that can solve the problems described in Table I.
