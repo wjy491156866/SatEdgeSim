@@ -20,6 +20,7 @@ For edge computing hotspot issues, Table I shows the differences between satelli
 **a) Network architecture:** Both scenarios include cloud computing centers, edge data centers, and mist nodes (edge devices), as shown in Figure 1. From mist nodes to edge data centers to cloud computing centers, the computing power of each layer is gradually increasing. 
 Mist nodes (edge devices) can request assistance from the cloud, edge, or other mist nodes to process tasks. It can also assist in processing tasks from other nodes. Edge data centers can not only handle various applications offloading from mist nodes (edge devices), but also complete tasks such as task scheduling, task analysis, and data fusion for the entire network. Cloud computing centers have the function of edge data center or mist node (edge device).
  
+ ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508145910335.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_5,color_FFFFFF,t_70#pic_center)
  
 **Figure 1. 	Satellite edge computing network architecture**
 
@@ -40,6 +41,8 @@ There are seven architectures considered for task deployment: 1) Cloud computing
 # ARCHITECTURE AND APPLICATION SCENARIO OF SATEDGESIM
 ## SatEdgeSim Architecture
 SatEdgeSim takes advantage of CloudSim Plus's support for discrete event simulation and cloud computing simulation, and uses PureEdgeSim's modular simulation framework and its expansion of the edge computing environment to build a satellite edge computing simulation environment. PureEdge- Sim provides high scalability, broad applicability and better code reusability. SatEdgeSim inherits the modular simulation framework. The main modules include: Simulation Manager, Data Centers Manager, Tasks Generator, Location Manager, Network Module, Tasks Orchestration and Scenario Manager. The block diagram of SatEdgeSim is shown in Figure 2. 
+ 
+ ![在这里插入图片描述](https://img-blog.csdnimg.cn/2020050815291941.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
  
 **Figure 2. 	 SatEdgeSim block diagram**
 
@@ -62,7 +65,9 @@ The next part is an introduction to the extended functions of each module of Sat
 ## SatEdgeSim Application Scenario
 
 In order to evaluate the performance of SatEdgeSim in the simulation and modeling of satellite edge computing scenarios, we established a satellite edge computing virtual environment composed of multiple satellite constellations. The satellite edge computing virtual environment is shown in Figure 3.
- 
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508153053750.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
+
 **Figure 3. 	Satellite edge computing simulation scenario**
 
 The satellite's orbit data and resource situation, the application's model can be characterized by file input. The satellite constellation parameters configured for different resource types are shown in Table II.
@@ -108,5 +113,64 @@ Number of mist(edge devices)|	1000|
 
 In the WEIGHT_GREEDY task deployment strategy, the weighting ratio of the four evaluation indicators of transmission distance, CPU processing time, number of tasks in parallel, and equipment energy consumption is 6: 6: 5: 3. In the satellite edge computing scenario, the timeliness of the task is important with the minimum energy consumption. Therefore, the weight of the evaluation indicators related to timeliness is relatively large. Finally, we use SatEdgeSim for simulation according to the above scenario description and parameter configuration.
 ## Simulation Results
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508153314430.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
+
+**Figure 4. 	Task's average end-to-end delay**
+
+Figure 4 shows the average end-to-end latency of tasks under different deployment strategies. It can be seen from the figure that the average end-to-end delay of all deployment strategies shows an upward trend with the increase in the number of satellites. Compared with other task deployment strategies, the proposed task deployment strategy WEIGHT_GREEDY has a lower average end-to-end delay. This strategy focuses on the impact of transmission distance, and chooses closer satellites for deployment, which greatly reduces the propagation delay.
+
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508153425419.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
+
+**Figure 5. 	Average energy consumption of each satellite
+
+The average energy consumption of each satellite node is shown in Figure 5. As the number of satellites increases, the average energy consumption of each satellite node remains basically unchanged. The proposed task deployment strategy, takes into account the energy consumption of each device in a balanced manner, so that the energy consumption of each satellite is as small as possible, which is about 3% -5% less than other deployment strategies.
+ 
+ ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508153510615.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
+ 
+**Figure 6. 	Task success rate**
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508153619276.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
+
+**(a) Task failure due to delay**     
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508153709173.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
+
+**(b) Task failure due to mobility**
+
+**Figure 7. 	Task failure rate**
+
+In terms of task success rate, the task success rate of the proposed task deployment strategy is higher than other strategies, maintaining above 80%, as shown in Figure 6. There are two main reasons for the failure of the task. First, the task is not completed within the maximum tolerance delay. Second, the movement of the satellite position exceeds the communication range.
+Figure 7 (a) (b) shows the situation of task failure rate caused by delay and mobility, respectively. The proposed strategy reduces task failures due to delays, but the failure rate due to mobility is slightly higher. 
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508153811151.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
+
+**(a) Cloud**                          
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508153833128.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
+
+**(b) Edge**
+ 
+ ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200508153901379.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxMjg1NzA5,size_16,color_FFFFFF,t_70#pic_center)
+ 
+**(c) Mist**
+
+**Figure 8. 	The number of processing tasks for each resource type**
+
+Figure 8 (a) (b) (c) shows the number of processing tasks for each resource type. By comparison, we can find that WEIGHT_GREEDY makes more tasks processed on the edge side, which will have lower end-to-end delay. Because low-orbit satellites move fast, it is easy to cause mission failures due to mobility. For tasks with low timeliness requirements, we can choose cloud or edge data centers to deploy to reduce task failures caused by mobility.
+
+
+
+# Authors : Junyong Wei, Suzhi Cao, Siyan Pan, Jiarong Han, Lei Yan, Lei Zhang
+
+## Please cite it as
+
+J. Wei, S. Cao, S. Pan, J. Han, L. Yan, and L. Zhang, "SatEdgeSim: A Toolkit for Modeling and Simulation of Performance Evaluation in Satellite Edge Computing Environments," in 2020 12th International Conference on Communication Software and Networks, ICCSN 2020, June 12, 2020 - June 15, 2020, Chongqing, China, 2020: Institute of Electrical and Electronics Engineers Inc.
+
+Other publication using PureEdgeSim can be found [here](https://orcid.org/0000-0001-7649-3380)
+
+For any questions, contact me at weijunyong17@mails.ucas.ac.cn or read [here](https://github.com/wjy491156866/SatEdgeSim/edit/master/README.md).
+
 
 
