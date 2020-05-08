@@ -20,13 +20,13 @@
 		<hosts>
 			<host>
 				<core>8</core>
-				<mips>25000</mips>
+				<mips>47000</mips>
 				<ram>4000</ram>
 				<storage>128000</storage>
 				<VMs>
 					<VM vmm="xen">
 						<core>8</core>
-						<mips>25000</mips>
+						<mips>47000</mips>
 						<ram>4000</ram>
 						<storage>128000</storage> <!--256MB of caching memory used in example 6 -->
 					</VM>
@@ -46,13 +46,13 @@
 		<hosts>
 			<host>
 				<core>4</core>
-				<mips>16000</mips>
+				<mips>37000</mips>
 				<ram>4000</ram>
 				<storage>32000</storage>
 				<VMs>
 					<VM vmm="xen">
 						<core>4</core>
-						<mips>16000</mips>
+						<mips>37000</mips>
 						<ram>4000</ram>
 						<storage>32000</storage>
 					</VM>
@@ -72,13 +72,13 @@
 		<hosts>
 			<host>
 				<core>8</core>
-				<mips>110000</mips>
+				<mips>140000</mips>
 				<ram>8000</ram>
 				<storage>1024000</storage>
 				<VMs>
 					<VM vmm="xen">
 						<core>8</core>
-						<mips>110000</mips>
+						<mips>140000</mips>
 						<ram>8000</ram>
 						<storage>1024000</storage>
 					</VM>
@@ -98,13 +98,13 @@
 		<hosts>
 			<host>
 				<core>2</core>
-				<mips>70000</mips>
+				<mips>100000</mips>
 				<ram>4000</ram>
 				<storage>64000</storage> <!-- this is a simple sensor that has no computing capacity -->
 				<VMs>
 					<VM vmm="xen">
 						<core>1</core>
-						<mips>70000</mips>
+						<mips>100000</mips>
 						<ram>4000</ram>
 						<storage>0</storage>
 					</VM>

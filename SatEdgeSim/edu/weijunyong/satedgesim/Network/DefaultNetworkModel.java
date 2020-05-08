@@ -289,7 +289,8 @@ public class DefaultNetworkModel extends NetworkModel {
 			}
 			else {
 				//scheduleNow(this, DefaultNetworkModel.DOWNLOAD_CONTAINER, transfer.getTask());
-				schedule(this, WAN_PROPAGATION_DELAY_TASK, DefaultNetworkModel.DOWNLOAD_CONTAINER, transfer.getTask());
+				//schedule(this, WAN_PROPAGATION_DELAY_TASK, DefaultNetworkModel.DOWNLOAD_CONTAINER, transfer.getTask());
+				scheduleNow(simulationManager, SimulationManager.EXECUTE_TASK, transfer.getTask());
 			}
 		} 
 		else {// if the registry is disabled, execute directly the request, as it represents

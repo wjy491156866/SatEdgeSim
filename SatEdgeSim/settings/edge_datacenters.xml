@@ -16,13 +16,13 @@
 				<VMs>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
@@ -32,17 +32,17 @@
 				<core>8</core>
 				<mips>800000</mips>
 				<ram>16000</ram>
-				<storage>200000</storage>
+				<storage>210000</storage>
 				<VMs>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
@@ -62,17 +62,17 @@
 				<core>8</core>
 				<mips>800000</mips>
 				<ram>16000</ram>
-				<storage>200000</storage>
+				<storage>210000</storage>
 				<VMs>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
@@ -82,17 +82,17 @@
 				<core>8</core>
 				<mips>800000</mips>
 				<ram>16000</ram>
-				<storage>200000</storage>
+				<storage>210000</storage>
 				<VMs>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
@@ -116,13 +116,13 @@
 				<VMs>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
 					<VM vmm="Xen">
 						<core>4</core>
-						<mips>200000</mips>
+						<mips>210000</mips>
 						<ram>4000</ram>
 						<storage>20000</storage>
 					</VM>
