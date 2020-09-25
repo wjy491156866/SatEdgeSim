@@ -169,6 +169,8 @@ Figure 8 (a) (b) (c) shows the number of processing tasks for each resource type
 J. Wei, S. Cao, S. Pan, J. Han, L. Yan, and L. Zhang, "SatEdgeSim: A Toolkit for Modeling and Simulation of Performance Evaluation in Satellite Edge Computing Environments," in 2020 12th International Conference on Communication Software and Networks, ICCSN 2020, June 12, 2020 - June 15, 2020, Chongqing, China, 2020: Institute of Electrical and Electronics Engineers Inc.
 
 Other publication using PureEdgeSim can be found [here](https://orcid.org/0000-0001-7649-3380)
+链接：https://pan.baidu.com/s/1lI-7TOJSVJsIj6C7IJV6TA 
+提取码：4zww
 
 For any questions, contact me at weijunyong17@mails.ucas.ac.cn or read [here](https://github.com/wjy491156866/SatEdgeSim/edit/master/README.md).
 
