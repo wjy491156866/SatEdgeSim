@@ -173,6 +173,8 @@ Other publication using PureEdgeSim can be found [here](https://orcid.org/0000-0
 Files in locationflie (mistfixed Position.csv ,edge Fixed Position.csv ,cloud Fixed Position.csv) can be downloaded from the following link.
 link：https://pan.baidu.com/s/1lI-7TOJSVJsIj6C7IJV6TA  Extraction code：4zww
 
+There are still some parts that can be improved in the project. I hope everyone can try to modify and submit your ideas to make Satedgesim more realistic.
+
 For any questions, contact me at weijunyong17@mails.ucas.ac.cn or read [here](https://github.com/wjy491156866/SatEdgeSim/edit/master/README.md).
 
 
